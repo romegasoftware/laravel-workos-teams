@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Contracts;
 
-interface TeamContract extends WorkOSTeams
+interface TeamContract
 {
     /**
      * Get the name of the team.

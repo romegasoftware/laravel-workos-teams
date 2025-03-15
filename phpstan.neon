@@ -1,0 +1,7 @@
+parameters:
+  level: 5
+  paths:
+    - src
+  ignoreErrors:
+    - '#Trait RomegaSoftware\\WorkOSTeams\\Traits\\HasWorkOSExternalId is used zero times and is not analysed.#'
+    - '#Trait RomegaSoftware\\WorkOSTeams\\Traits\\HasTeams is used zero times and is not analysed.#'

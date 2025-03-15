@@ -14,6 +14,7 @@ class WorkOSTeamsServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         // Register repositories
@@ -34,12 +35,12 @@ class WorkOSTeamsServiceProvider extends ServiceProvider
 
         // Register configurations
         $this->mergeConfigFrom(
-            __DIR__.'/../config/workos-teams.php',
+            __DIR__ . '/../config/workos-teams.php',
             'workos-teams'
         );
 
         // Bind the team model to the TeamContract interface
-        $this->app->bind(TeamContract::class, function ($app) {
+        $this->app->bind(TeamContract::class, function () {
             $teamModel = config('workos-teams.models.team');
 
             return new $teamModel;
@@ -60,24 +61,24 @@ class WorkOSTeamsServiceProvider extends ServiceProvider
 
         // Publish configuration
         $this->publishes([
-            __DIR__.'/../config/workos-teams.php' => config_path('workos-teams.php'),
+            __DIR__ . '/../config/workos-teams.php' => config_path('workos-teams.php'),
         ], 'workos-teams-config');
 
         // Publish migrations
         $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'workos-teams-migrations');
 
         // Load routes
-        $this->loadRoutesFrom(__DIR__.'/../routes/webhooks.php');
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/webhooks.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
         // Load views
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'workos-teams');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'workos-teams');
 
         // Publish views
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/workos-teams'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/workos-teams'),
         ], 'workos-teams-views');
     }
 }

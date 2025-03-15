@@ -52,6 +52,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     /**
      * Get an organization by ID
      */
+    #[\Override]
     public function find(FindOrganizationDTO $dto): ?Organization
     {
         $cacheKey = $this->cache->getOrganizationKey($dto->id);
@@ -74,6 +75,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     /**
      * Create a new organization
      */
+    #[\Override]
     public function create(CreateOrganizationDTO $dto): ?Organization
     {
         try {
@@ -104,6 +106,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     /**
      * Update an organization
      */
+    #[\Override]
     public function update(ExternalId $organization, UpdateOrganizationDTO $dto): ?Organization
     {
         try {
@@ -140,6 +143,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     /**
      * Delete an organization
      */
+    #[\Override]
     public function delete(ExternalId $organization): bool
     {
         try {
@@ -167,6 +171,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     /**
      * Add a user to an organization
      */
+    #[\Override]
     public function addUser(ExternalId $organization, ExternalId $user, string $role = 'member'): ?OrganizationMembership
     {
         try {
@@ -199,6 +204,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     /**
      * Remove a user from an organization
      */
+    #[\Override]
     public function removeUser(ExternalId $organization, ExternalId $user): bool
     {
         try {
@@ -229,6 +235,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
      *
      * @return array<OrganizationMembership>
      */
+    #[\Override]
     public function getUserMemberships(ExternalId $user): array
     {
         $cacheKey = $this->cache->getUserMembershipsKey($user->getExternalId());
@@ -251,6 +258,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     /**
      * Get a user's organization membership
      */
+    #[\Override]
     public function getUserMembership(ExternalId $organization, ExternalId $user): ?OrganizationMembership
     {
         $memberships = $this->getUserMemberships($user);

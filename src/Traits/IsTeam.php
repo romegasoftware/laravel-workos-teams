@@ -2,15 +2,15 @@
 
 namespace RomegaSoftware\WorkOSTeams\Traits;
 
-use App\Models\TeamInvitation;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User;
 use RomegaSoftware\WorkOSTeams\Events\TeamCreated;
 use RomegaSoftware\WorkOSTeams\Events\TeamDeleted;
+use RomegaSoftware\WorkOSTeams\Events\TeamUpdated;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberAdded;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberRemoved;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberUpdated;
-use RomegaSoftware\WorkOSTeams\Events\TeamUpdated;
 
 trait IsTeam
 {

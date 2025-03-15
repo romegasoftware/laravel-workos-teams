@@ -15,6 +15,7 @@ class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
         protected OrganizationRepository $organizationRepository,
     ) {}
 
+    #[\Override]
     public function authenticate(?callable $findUsing = null, ?callable $createUsing = null, ?callable $updateUsing = null): mixed
     {
         return parent::authenticate(
@@ -24,6 +25,7 @@ class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
         );
     }
 
+    #[\Override]
     protected function createUsing(User $userFromWorkOS): AppUser
     {
         $createdAppUser = parent::createUsing($userFromWorkOS);
@@ -33,6 +35,7 @@ class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
         return $appUser;
     }
 
+    #[\Override]
     protected function updateUsing(AppUser $existingAppUser, User $userFromWorkOS): AppUser
     {
         $updatedAppUser = parent::updateUsing($existingAppUser, $userFromWorkOS);

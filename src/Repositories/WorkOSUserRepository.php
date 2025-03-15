@@ -44,6 +44,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * Get a user by ID
      */
+    #[\Override]
     public function find(FindUserDTO $dto): ?User
     {
         $cacheKey = $this->cache->getUserKey($dto->id);
@@ -66,6 +67,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * Create a new user
      */
+    #[\Override]
     public function create(CreateUserDTO $dto): ?User
     {
         try {
@@ -98,6 +100,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * Update a user
      */
+    #[\Override]
     public function update(ExternalId $user, UpdateUserDTO $dto): ?User
     {
         try {
@@ -136,6 +139,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * Delete a user
      */
+    #[\Override]
     public function delete(ExternalId $user): bool
     {
         try {
@@ -163,6 +167,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * Authenticate a user with refresh token
      */
+    #[\Override]
     public function authenticateWithRefreshToken(string $refreshToken): array
     {
         try {
@@ -193,6 +198,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * Authenticate a user with an organization
      */
+    #[\Override]
     public function authenticateUser(
         ExternalId $organization,
         ExternalId $user,
@@ -240,6 +246,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * List users
      */
+    #[\Override]
     public function listUsers(ListUsersDTO $dto): array
     {
         try {
@@ -265,6 +272,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * Send an invitation to join an organization
      */
+    #[\Override]
     public function sendInvitation(
         ExternalId $organization,
         string $email,
@@ -295,6 +303,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * Revoke an invitation
      */
+    #[\Override]
     public function revokeInvitation(ExternalId $organization, ExternalId $invitation): ?OrganizationInvitation
     {
         try {

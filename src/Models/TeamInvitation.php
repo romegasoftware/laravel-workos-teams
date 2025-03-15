@@ -2,16 +2,26 @@
 
 namespace RomegaSoftware\WorkOSTeams\Models;
 
-use App\Models\Team;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User as AppUser;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use RomegaSoftware\WorkOSTeams\Models\Team;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
-use RomegaSoftware\WorkOSTeams\Events\TeamInvitationCancelled;
-use RomegaSoftware\WorkOSTeams\Events\TeamInvitationCreated;
 use RomegaSoftware\WorkOSTeams\Traits\HasExternalId;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use RomegaSoftware\WorkOSTeams\Events\TeamInvitationCreated;
+use RomegaSoftware\WorkOSTeams\Events\TeamInvitationCancelled;
 
+/**
+ * @property string $team_id
+ * @property string $email
+ * @property string $role
+ * @property string $invited_by
+ * @property string $workos_invitation_id
+ * @property-read AppUser $inviter
+ * @property-read Team $team
+ * @method static \Illuminate\Database\Eloquent\Builder|\RomegaSoftware\WorkOSTeams\Models\TeamInvitation query()
+ */
 class TeamInvitation extends Model implements ExternalId
 {
     use HasExternalId;
@@ -61,9 +71,11 @@ class TeamInvitation extends Model implements ExternalId
 
     /**
      * Get the user that sent the invitation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User>
      */
     public function inviter(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'invited_by');
+        return $this->belongsTo(AppUser::class, 'invited_by');
     }
 }

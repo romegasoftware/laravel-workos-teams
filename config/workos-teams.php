@@ -17,8 +17,8 @@ return [
     |
     */
     'models' => [
-        'team' => \App\Models\Team::class,
-        'team_invitation' => \App\Models\TeamInvitation::class,
+        'team' => \RomegaSoftware\WorkOSTeams\Models\Team::class,
+        'team_invitation' => \RomegaSoftware\WorkOSTeams\Models\TeamInvitation::class,
     ],
 
     /*
