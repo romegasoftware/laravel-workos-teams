@@ -1,13 +1,13 @@
 <?php
 
-use WorkOS\Webhook;
 use App\Models\User;
 use Illuminate\Http\Request;
-use WorkOS\Resource\WebhookResponse;
 use Illuminate\Support\Facades\Route;
+use RomegaSoftware\WorkOSTeams\Domain\DTOs\FindOrganizationDTO;
 use RomegaSoftware\WorkOSTeams\Models\Team;
 use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
-use RomegaSoftware\WorkOSTeams\Domain\DTOs\FindOrganizationDTO;
+use WorkOS\Resource\WebhookResponse;
+use WorkOS\Webhook;
 
 Route::prefix(config('workos-teams.routes.prefix', 'webhooks'))
     ->middleware(config('workos-teams.routes.middleware', ['api']))
@@ -30,7 +30,7 @@ Route::prefix(config('workos-teams.routes.prefix', 'webhooks'))
             $user = User::updateOrCreate([
                 'email' => $webhook->user_data->email,
             ], [
-                'name' => $webhook->user_data->first_name . ' ' . $webhook->user_data->last_name,
+                'name' => $webhook->user_data->first_name.' '.$webhook->user_data->last_name,
                 'email_verified_at' => now(),
             ]);
 
