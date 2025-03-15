@@ -245,6 +245,10 @@ class WorkOSUserRepository implements UserRepository
 
     /**
      * List users
+     *
+     * @return (\WorkOS\Resource\User[]|null|string)[]
+     *
+     * @psalm-return list{0?: null|string, 1?: null|string, 2?: array<\WorkOS\Resource\User>}
      */
     #[\Override]
     public function listUsers(ListUsersDTO $dto): array

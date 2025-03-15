@@ -37,8 +37,12 @@ class SyncWorkOSOrganizations extends Command
 
     /**
      * Execute the console command.
+     *
+     * @return bool|int
+     *
+     * @psalm-return 0|1|bool
      */
-    public function handle(): int
+    public function handle(): int|bool
     {
         $teamModel = config('workos-teams.models.team', Team::class);
         $this->externalIdColumn = $teamModel::getExternalIdColumn();
@@ -79,7 +83,7 @@ class SyncWorkOSOrganizations extends Command
         return 0;
     }
 
-    protected function syncOrganization(TeamContract $team): bool
+    protected function syncOrganization(TeamContract $team): int
     {
         if (! $team->getExternalId()) {
             $this->info("Creating WorkOS organization for team '{$team->name}'...");
