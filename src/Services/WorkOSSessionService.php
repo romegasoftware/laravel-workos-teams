@@ -4,7 +4,7 @@ namespace RomegaSoftware\WorkOSTeams\Services;
 
 use Illuminate\Support\Facades\Session;
 
-class WorkOSSessionService
+final class WorkOSSessionService
 {
     protected const ACCESS_TOKEN_KEY = 'workos_access_token';
 
@@ -15,7 +15,7 @@ class WorkOSSessionService
      */
     public function storeAccessToken(?string $token): void
     {
-        if ($token) {
+        if ($token !== null) {
             Session::put(self::ACCESS_TOKEN_KEY, $token);
         }
     }
@@ -25,34 +25,17 @@ class WorkOSSessionService
      */
     public function storeRefreshToken(?string $token): void
     {
-        if ($token) {
+        if ($token !== null) {
             Session::put(self::REFRESH_TOKEN_KEY, $token);
         }
     }
 
     /**
-     * Get the access token from the session
-     */
-    public function getAccessToken(): ?string
-    {
-        return Session::get(self::ACCESS_TOKEN_KEY);
-    }
-
-    /**
      * Get the refresh token from the session
      */
-    public function getRefreshToken(): ?string
+    public function getRefreshToken(): string
     {
         return Session::get(self::REFRESH_TOKEN_KEY);
-    }
-
-    /**
-     * Clear all WorkOS tokens from the session
-     */
-    public function clearTokens(): void
-    {
-        Session::forget(self::ACCESS_TOKEN_KEY);
-        Session::forget(self::REFRESH_TOKEN_KEY);
     }
 
     /**

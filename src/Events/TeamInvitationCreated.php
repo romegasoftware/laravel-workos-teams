@@ -2,12 +2,12 @@
 
 namespace RomegaSoftware\WorkOSTeams\Events;
 
-use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
-use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
+use RomegaSoftware\WorkOSTeams\Models\AbstractTeamInvitation;
 
 class TeamInvitationCreated
 {
@@ -22,7 +22,7 @@ class TeamInvitationCreated
      * Create a new event instance.
      */
     public function __construct(
-        public TeamInvitation $invitation
+        public AbstractTeamInvitation $invitation
     ) {
         $this->inviter = User::find($invitation->invited_by);
     }

@@ -2,12 +2,12 @@
 
 namespace RomegaSoftware\WorkOSTeams\Http\Requests;
 
-use App\Models\Team;
-use App\Models\User as AppUser;
-use Laravel\WorkOS\Http\Requests\AuthKitAuthenticationRequest;
 use Laravel\WorkOS\User;
-use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
+use App\Models\User as AppUser;
+use RomegaSoftware\WorkOSTeams\Models\Team;
+use Laravel\WorkOS\Http\Requests\AuthKitAuthenticationRequest;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\FindOrganizationDTO;
+use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 
 class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
 {
@@ -67,7 +67,7 @@ class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
         );
 
         if ($team) {
-            $existingAppUser->updateQuietly(['current_team_id' => $team->id]);
+            $existingAppUser->updateQuietly(['current_team_id' => $team->getKey()]);
         }
 
         return $existingAppUser;

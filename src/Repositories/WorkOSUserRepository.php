@@ -19,7 +19,10 @@ use RomegaSoftware\WorkOSTeams\Services\WorkOSSessionService;
 use WorkOS\Resource\AuthenticationResponse;
 use WorkOS\UserManagement;
 
-class WorkOSUserRepository implements UserRepository
+/**
+ * @api
+ */
+final class WorkOSUserRepository implements UserRepository
 {
     /**
      * The WorkOS UserManagement instance.
@@ -28,6 +31,8 @@ class WorkOSUserRepository implements UserRepository
 
     /**
      * Create a new WorkOS user repository instance.
+     *
+     * @api
      */
     public function __construct(
         protected WorkOSCacheService $cache,
@@ -105,6 +110,7 @@ class WorkOSUserRepository implements UserRepository
     {
         try {
             $workosId = $user->getExternalId();
+            assert($workosId !== null);
 
             $workosUser = $this->userManagement->updateUser(
                 $workosId,
@@ -128,8 +134,7 @@ class WorkOSUserRepository implements UserRepository
             return $userDomain;
         } catch (\Exception $e) {
             $this->logger->exception($e, [
-                'user_id' => $user->id,
-                'workos_id' => $user->getExternalId(),
+                'user' => $user->toArray(),
             ]);
 
             return null;
@@ -144,6 +149,8 @@ class WorkOSUserRepository implements UserRepository
     {
         try {
             $workosId = $user->getExternalId();
+            assert($workosId !== null);
+
             $this->userManagement->deleteUser($workosId);
 
             // Clear the cache
@@ -156,7 +163,7 @@ class WorkOSUserRepository implements UserRepository
             return true;
         } catch (\Exception $e) {
             $this->logger->exception($e, [
-                'user_id' => $user->id,
+                'user' => $user->toArray(),
                 'workos_id' => $user->getExternalId(),
             ]);
 
@@ -171,6 +178,15 @@ class WorkOSUserRepository implements UserRepository
     public function authenticateWithRefreshToken(string $refreshToken): array
     {
         try {
+            /**
+             * IDE type hint until resolved in WorkOS PHP SDK
+             * https://github.com/workos/workos-php/pull/264
+             *
+             * @var AuthenticationResponse&object{
+             *    access_token: string,
+             *    refresh_token: string,
+             *    organization_id: ?string
+             */
             $result = $this->userManagement->authenticateWithRefreshToken(
                 config('services.workos.client_id'),
                 $refreshToken
@@ -206,6 +222,16 @@ class WorkOSUserRepository implements UserRepository
         ?string $userAgent = null
     ): array {
         try {
+            /**
+             * IDE type hint until resolved in WorkOS PHP SDK
+             * https://github.com/workos/workos-php/pull/264
+             *
+             * @var AuthenticationResponse&object{
+             *    access_token: string,
+             *    refresh_token: string,
+             *    organization_id: string
+             * } $result
+             */
             $result = $this->userManagement->authenticateWithRefreshToken(
                 config('services.workos.client_id'),
                 $this->session->getRefreshToken(),
@@ -225,8 +251,8 @@ class WorkOSUserRepository implements UserRepository
             ];
         } catch (\Exception $e) {
             $this->logger->exception($e, [
-                'organization_id' => $organization->getExternalId(),
-                'user_id' => $user->getExternalId(),
+                'organization' => $organization->toArray(),
+                'user' => $user->toArray(),
             ]);
 
             return [
@@ -236,6 +262,17 @@ class WorkOSUserRepository implements UserRepository
         }
     }
 
+    /**
+     * IDE type hint until resolved in WorkOS PHP SDK
+     * https://github.com/workos/workos-php/pull/264
+     *
+     * @param AuthenticationResponse $tokens
+     * @psalm-param AuthenticationResponse&object{
+     *    access_token: string,
+     *    refresh_token: string
+     * } $tokens
+     * @return void
+     */
     protected function storeTokensInSession(AuthenticationResponse $tokens): void
     {
         $this->session->storeAccessToken($tokens->access_token);
@@ -246,9 +283,7 @@ class WorkOSUserRepository implements UserRepository
     /**
      * List users
      *
-     * @return (\WorkOS\Resource\User[]|null|string)[]
-     *
-     * @psalm-return list{0?: null|string, 1?: null|string, 2?: array<\WorkOS\Resource\User>}
+     * @return array{0?: null|string, 1?: null|string, 2?: array<array-key, \WorkOS\Resource\User>}
      */
     #[\Override]
     public function listUsers(ListUsersDTO $dto): array
@@ -297,7 +332,7 @@ class WorkOSUserRepository implements UserRepository
         } catch (\Exception $e) {
             $this->logger->exception($e, [
                 'email' => $email,
-                'organization_id' => $organization->getExternalId(),
+                'organization' => $organization->toArray(),
             ]);
 
             return null;
@@ -310,14 +345,20 @@ class WorkOSUserRepository implements UserRepository
     #[\Override]
     public function revokeInvitation(ExternalId $organization, ExternalId $invitation): ?OrganizationInvitation
     {
+        if ($invitation->getExternalId() === null) {
+            return null;
+        }
+
         try {
-            $response = $this->userManagement->revokeInvitation($invitation->getExternalId());
+            $invitationId = $invitation->getExternalId();
+            assert($invitationId !== null);
+            $response = $this->userManagement->revokeInvitation($invitationId);
 
             return OrganizationInvitation::fromArray($response->toArray());
         } catch (\Exception $e) {
             $this->logger->exception($e, [
-                'organization_id' => $organization->getExternalId(),
-                'invitation_id' => $invitation->getExternalId(),
+                'organization' => $organization->toArray(),
+                'invitation' => $invitation->toArray(),
             ]);
 
             return null;

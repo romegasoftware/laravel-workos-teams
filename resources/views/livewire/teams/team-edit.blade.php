@@ -4,13 +4,12 @@
     subtitle="{{ __('Update team information') }}"
     title="{{ __('Edit Team') }}"
 >
-    <flux:card class="max-w-2xl mx-auto">
+    <flux:card class="mx-auto max-w-2xl">
         <form
             class="space-y-6"
             wire:submit="save"
         >
             <flux:input
-                id="name"
                 label="{{ __('Team Name') }}"
                 placeholder="{{ __('Enter team name') }}"
                 required
@@ -18,7 +17,6 @@
             />
 
             <flux:textarea
-                id="description"
                 label="{{ __('Description') }}"
                 placeholder="{{ __('Enter team description') }}"
                 rows="3"
@@ -34,8 +32,8 @@
                         </p>
                         <div class="mt-4">
                             <flux:button
-                                variant="danger"
                                 type="button"
+                                variant="danger"
                                 wire:click="deleteTeam"
                             >
                                 {{ __('Delete Team') }}

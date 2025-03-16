@@ -12,10 +12,9 @@ class TeamShow extends Component
 {
     public TeamContract $team;
 
-    public function mount(TeamContract $team)
+    public function mount()
     {
-        $this->authorize('view', $team);
-        $this->team = $team;
+        $this->authorize('view', $this->team);
 
         // Eager load members with their pivot data
         $this->team->load(['members' => function ($query) {

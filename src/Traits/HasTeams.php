@@ -2,12 +2,15 @@
 
 namespace RomegaSoftware\WorkOSTeams\Traits;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
-use RomegaSoftware\WorkOSTeams\Contracts\UserRepository;
+use Illuminate\Database\Eloquent\Model;
+use RomegaSoftware\WorkOSTeams\Models\Team;
 use RomegaSoftware\WorkOSTeams\Events\UserDeleted;
 use RomegaSoftware\WorkOSTeams\Events\UserUpdated;
+use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
+use RomegaSoftware\WorkOSTeams\Contracts\UserRepository;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasTeams
 {
@@ -16,7 +19,7 @@ trait HasTeams
      *
      * @return void
      */
-    public static function bootIsTeam()
+    public static function bootHasTeams()
     {
         static::updated(function ($model) {
             event(new UserUpdated($model));
@@ -31,7 +34,7 @@ trait HasTeams
      */
     public function teams(): BelongsToMany
     {
-        $teamModel = config('workos-teams.models.team', \App\Models\Team::class);
+        $teamModel = config('workos-teams.models.team', Team::class);
 
         return $this->belongsToMany($teamModel, 'team_members')
             ->withPivot('role')
@@ -43,7 +46,7 @@ trait HasTeams
      */
     public function currentTeam(): BelongsTo
     {
-        $teamModel = config('workos-teams.models.team', \App\Models\Team::class);
+        $teamModel = config('workos-teams.models.team', Team::class);
 
         return $this->belongsTo($teamModel, 'current_team_id');
     }
@@ -58,12 +61,12 @@ trait HasTeams
         // Check if the current_team_id exists and is not in the teams collection
         if ($this->current_team_id) {
             $currentTeam = $this->currentTeam()->first();
-            if ($currentTeam && ! $teams->contains('id', $currentTeam->id)) {
+            if ($currentTeam && ! $teams->contains(self::getKeyName(), $currentTeam->getKey())) {
                 $teams = $teams->push($currentTeam);
             }
         }
 
-        return $teams->unique('id')->values();
+        return $teams->unique(self::getKeyName())->values();
     }
 
     /**
@@ -81,7 +84,7 @@ trait HasTeams
     /**
      * Switch to the given team.
      */
-    public function switchTeam($team): void
+    public function switchTeam(Model&TeamContract&ExternalId $team): void
     {
         // Ensure the user belongs to the team
         if (! $this->belongsToTeam($team)) {
@@ -101,7 +104,7 @@ trait HasTeams
             }
         }
 
-        $this->update(['current_team_id' => $team->id]);
+        $this->update(['current_team_id' => $team->getKey()]);
         $this->load('currentTeam'); // Reload the currentTeam relationship
     }
 
@@ -110,7 +113,7 @@ trait HasTeams
      */
     public function belongsToTeam($team): bool
     {
-        return $this->teams->contains(fn ($t) => $t->id === $team->id);
+        return $this->teams->contains(fn($t) => $t->getKey() === $team->getKey());
     }
 
     /**
@@ -122,7 +125,7 @@ trait HasTeams
             return null;
         }
 
-        return $this->teams->find($team->id)?->pivot->role;
+        return $this->teams->find($team->getKey())?->pivot->role;
     }
 
     /**
@@ -148,7 +151,7 @@ trait HasTeams
     /**
      * Authenticate with a WorkOS organization
      */
-    protected function authenticateWithTeam(TeamContract $team): bool
+    protected function authenticateWithTeam(TeamContract&ExternalId $team): bool
     {
         $userRepository = app(UserRepository::class);
 

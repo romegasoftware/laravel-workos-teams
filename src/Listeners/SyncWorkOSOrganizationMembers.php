@@ -2,10 +2,10 @@
 
 namespace App\Listeners;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use RomegaSoftware\WorkOSTeams\Console\Commands\SyncWorkOSOrganizations;
-use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 use RomegaSoftware\WorkOSTeams\Events\TeamCreated;
+use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 
 class SyncWorkOSOrganizationMembers implements ShouldQueue
 {
@@ -21,6 +21,8 @@ class SyncWorkOSOrganizationMembers implements ShouldQueue
      */
     public function handle(TeamCreated $event): void
     {
-        SyncWorkOSOrganizations::dispatch($event->team);
+        Artisan::call('workos:sync-organizations', [
+            '--team-id' => $event->team->getKey(),
+        ]);
     }
 }

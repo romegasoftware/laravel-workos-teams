@@ -1,38 +1,37 @@
 <x-page-layout
-    title="{{ __('Create Team') }}"
-    subtitle="{{ __('Create a new team to collaborate with others.') }}"
     :hasBackButton="true"
     backRoute="{{ route('teams.index') }}"
+    subtitle="{{ __('Create a new team to collaborate with others.') }}"
+    title="{{ __('Create Team') }}"
 >
     <flux:card>
-        <form wire:submit="save" class="space-y-6">
+        <form
+            class="space-y-6"
+            wire:submit="save"
+        >
             <flux:input
                 label="{{ __('Team Name') }}"
-                id="name"
-                wire:model="name"
                 placeholder="{{ __('Enter team name') }}"
                 required
+                wire:model="name"
             />
 
             <flux:textarea
                 label="{{ __('Description') }}"
-                id="description"
-                wire:model="description"
                 placeholder="{{ __('Enter team description (optional)') }}"
                 rows="3"
+                wire:model="description"
             />
 
             <div class="flex justify-end space-x-2 pt-4">
                 <flux:button
-                    tag="a"
                     href="{{ route('teams.index') }}"
+                    tag="a"
                     variant="outline"
                 >
                     {{ __('Cancel') }}
                 </flux:button>
-                <flux:button
-                    type="submit"
-                >
+                <flux:button type="submit">
                     {{ __('Create Team') }}
                 </flux:button>
             </div>

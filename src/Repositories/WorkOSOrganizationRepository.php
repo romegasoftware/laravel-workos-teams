@@ -20,7 +20,10 @@ use RomegaSoftware\WorkOSTeams\Services\WorkOSSessionService;
 use WorkOS\Organizations;
 use WorkOS\UserManagement;
 
-class WorkOSOrganizationRepository implements OrganizationRepository
+/**
+ * @api
+ */
+final class WorkOSOrganizationRepository implements OrganizationRepository
 {
     /**
      * The WorkOS Organizations instance.
@@ -34,12 +37,12 @@ class WorkOSOrganizationRepository implements OrganizationRepository
 
     /**
      * Create a new WorkOS organization repository instance.
+     *
+     * @api
      */
     public function __construct(
         protected WorkOSCacheService $cache,
         protected WorkOSLogService $logger,
-        protected WorkOSSessionService $session,
-        protected Repository $config,
     ) {
         // Configure WorkOS
         LaravelWorkOS::configure();
@@ -83,7 +86,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
                 $dto->name,
                 $dto->domains,
                 $dto->allowProfilesOutsideOrganization,
-                Uuid::uuid4(), // idempotency key
+                (string) Uuid::uuid4(), // idempotency key
                 $dto->domainData
             );
 
@@ -111,6 +114,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     {
         try {
             $workosId = $organization->getExternalId();
+            assert($workosId !== null);
 
             $workosOrg = $this->organizations->updateOrganization(
                 $workosId,
@@ -132,8 +136,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
             return $organizationDomain;
         } catch (\Exception $e) {
             $this->logger->exception($e, [
-                'organization_id' => $organization->id,
-                'workos_id' => $organization->getExternalId(),
+                'organization' => $organization->toArray(),
             ]);
 
             return null;
@@ -148,6 +151,8 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     {
         try {
             $workosId = $organization->getExternalId();
+            assert($workosId !== null);
+
             $this->organizations->deleteOrganization($workosId);
 
             // Clear the cache
@@ -160,8 +165,7 @@ class WorkOSOrganizationRepository implements OrganizationRepository
             return true;
         } catch (\Exception $e) {
             $this->logger->exception($e, [
-                'organization_id' => $organization->id,
-                'workos_id' => $organization->getExternalId(),
+                'organization' => $organization->toArray(),
             ]);
 
             return false;
@@ -170,17 +174,28 @@ class WorkOSOrganizationRepository implements OrganizationRepository
 
     /**
      * Add a user to an organization
+     *
+     * @return null|OrganizationMembership
      */
     #[\Override]
     public function addUser(ExternalId $organization, ExternalId $user, string $role = 'member'): ?OrganizationMembership
     {
         try {
-            $workosId = $organization->getExternalId();
+            $workosOrganizationId = $organization->getExternalId();
+            $workosUserId = $user->getExternalId();
+            assert($workosOrganizationId !== null);
+            assert($workosUserId !== null);
 
-            /** @var \WorkOS\Resource\OrganizationMembership $membership */
+            /**
+             * IDE type hint until resolved in WorkOS PHP SDK
+             * https://github.com/workos/workos-php/pull/264
+             *
+             * @var \WorkOS\Resource\OrganizationMembership&object{
+             *   id: string,
+             * } $membership */
             $membership = $this->userManagement->createOrganizationMembership(
-                $user->getExternalId(),
-                $workosId
+                $workosUserId,
+                $workosOrganizationId
             );
 
             $updatedMembership = $this->userManagement->updateOrganizationMembership(
@@ -191,9 +206,8 @@ class WorkOSOrganizationRepository implements OrganizationRepository
             return OrganizationMembership::fromArray($updatedMembership->toArray());
         } catch (\Exception $e) {
             $this->logger->exception($e, [
-                'organization_id' => $organization->id,
-                'workos_id' => $organization->getExternalId(),
-                'user_id' => $user->getExternalId(),
+                'organization' => $organization->toArray(),
+                'user' => $user->toArray(),
                 'role' => $role,
             ]);
 
@@ -208,22 +222,17 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     public function removeUser(ExternalId $organization, ExternalId $user): bool
     {
         try {
-            $organizationId = $organization->getExternalId();
-            $userId = $user->getExternalId();
             $memberships = $this->getUserMembership($organization, $user);
 
             if (empty($memberships)) {
                 return false;
             }
 
-            $this->userManagement->deleteOrganizationMembership($organizationId, $userId);
-
             return true;
         } catch (\Exception $e) {
             $this->logger->exception($e, [
-                'organization_id' => $organization->id,
-                'workos_id' => $organization->getExternalId(),
-                'user_id' => $userId,
+                'organization' => $organization->toArray(),
+                'user' => $user->toArray(),
             ]);
 
             return false;
@@ -238,16 +247,19 @@ class WorkOSOrganizationRepository implements OrganizationRepository
     #[\Override]
     public function getUserMemberships(ExternalId $user): array
     {
-        $cacheKey = $this->cache->getUserMembershipsKey($user->getExternalId());
+        $workosId = $user->getExternalId();
+        assert($workosId !== null);
 
-        return $this->cache->remember($cacheKey, function () use ($user) {
+        $cacheKey = $this->cache->getUserMembershipsKey($workosId);
+
+        return $this->cache->remember($cacheKey, function () use ($user, $workosId) {
             try {
-                [$before, $after, $memberships] = $this->userManagement->listOrganizationMemberships($user->getExternalId());
+                [,, $memberships] = $this->userManagement->listOrganizationMemberships($workosId);
 
                 return $memberships;
             } catch (\Exception $e) {
                 $this->logger->exception($e, [
-                    'user_id' => $user->getExternalId(),
+                    'user' => $user->toArray(),
                 ]);
 
                 return [];
@@ -257,6 +269,8 @@ class WorkOSOrganizationRepository implements OrganizationRepository
 
     /**
      * Get a user's organization membership
+     *
+     * @return null|OrganizationMembership
      */
     #[\Override]
     public function getUserMembership(ExternalId $organization, ExternalId $user): ?OrganizationMembership

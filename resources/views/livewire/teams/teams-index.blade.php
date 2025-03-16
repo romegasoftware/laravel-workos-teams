@@ -35,7 +35,7 @@
             </flux:table.columns>
 
             @foreach ($this->team as $team)
-                <flux:table.row wire:key="team-{{ $team->id }}">
+                <flux:table.row wire:key="team-{{ $team->getKey() }}">
                     <flux:table.cell class="font-medium">
                         @can('view', $team)
                             <a
@@ -88,7 +88,7 @@
                             <flux:button
                                 size="xs"
                                 variant="danger"
-                                wire:click="deleteTeam({{ $team->id }})"
+                                wire:click="deleteTeam({{ $team->getKey() }})"
                                 wire:confirm="{{ __('Are you sure you want to delete this team?') }}"
                             >
                                 {{ __('Delete') }}

@@ -33,14 +33,7 @@ interface OrganizationRepository
     /**
      * Add a user to an organization
      *
-     * @return array{
-     *   id: string,
-     *   organization_id: string,
-     *   user_id: string,
-     *   role: string,
-     *   created_at: string,
-     *   updated_at: string
-     * }|null
+     * @return null|OrganizationMembership
      */
     public function addUser(ExternalId $organization, ExternalId $user, string $role = 'member'): ?OrganizationMembership;
 

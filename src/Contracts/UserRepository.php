@@ -34,7 +34,7 @@ interface UserRepository
     /**
      * Get a list of all of your existing users matching the criteria specified.
      *
-     * @return array{0: ?string, 1: ?string, 2: array<User>}
+     * @return array{0?: null|string, 1?: null|string, 2?: array<array-key, \WorkOS\Resource\User>}
      */
     public function listUsers(ListUsersDTO $dto): array;
 

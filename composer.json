@@ -15,7 +15,7 @@
         "laravel/workos": "dev-main",
         "illuminate/http": "^9.0|^10.0|^11.0|^12.0",
         "illuminate/database": "^9.0|^10.0|^11.0|^12.0",
-        "workos/workos-php": "^4.0",
+        "workos/workos-php": "^4.21",
         "ramsey/uuid": "^4.0"
     },
     "require-dev": {
@@ -37,7 +37,10 @@
     "autoload-dev": {
         "psr-4": {
             "RomegaSoftware\\WorkOSTeams\\Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "stubs/App/Models/User.php"
+        ]
     },
     "extra": {
         "laravel": {

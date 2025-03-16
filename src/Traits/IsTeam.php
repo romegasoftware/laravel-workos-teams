@@ -3,39 +3,21 @@
 namespace RomegaSoftware\WorkOSTeams\Traits;
 
 use Illuminate\Foundation\Auth\User;
-use RomegaSoftware\WorkOSTeams\Events\TeamCreated;
-use RomegaSoftware\WorkOSTeams\Events\TeamDeleted;
-use RomegaSoftware\WorkOSTeams\Events\TeamUpdated;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberAdded;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberRemoved;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberUpdated;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait IsTeam
 {
     /**
-     * Boot the trait.
-     *
-     * @return void
-     */
-    public static function bootIsTeam()
-    {
-        static::created(function ($model) {
-            event(new TeamCreated($model));
-        });
-
-        static::updated(function ($model) {
-            event(new TeamUpdated($model));
-        });
-
-        static::deleted(function ($model) {
-            event(new TeamDeleted($model));
-        });
-    }
-
-    /**
      * Get the invitations for the team.
+     *
+     * @api
      */
     public function invitations(): HasMany
     {
@@ -43,17 +25,31 @@ trait IsTeam
     }
 
     /**
+     * Get the members of the team.
+     *
+     * @api
+     */
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'team_members');
+    }
+
+    /**
      * Determine if the given user belongs to the team.
+     *
+     * @api
      */
     public function hasUser(User $user): bool
     {
-        return $this->members()->where('user_id', $user->id)->exists();
+        return $this->members()->where($user->getForeignKey(), $user->getKey())->exists();
     }
 
     /**
      * Add a member to the team.
+     *
+     * @api
      */
-    public function addMember(User $user, string $role = 'member'): void
+    public function addMember(User&ExternalId $user, string $role = 'member'): void
     {
         $this->members()->attach($user, ['role' => $role]);
 
@@ -63,8 +59,10 @@ trait IsTeam
 
     /**
      * Update a member's role in the team.
+     *
+     * @api
      */
-    public function updateMember(User $user, string $role = 'member'): void
+    public function updateMember(User&ExternalId $user, string $role = 'member'): void
     {
         $this->members()->updateExistingPivot($user, ['role' => $role]);
 
@@ -74,8 +72,10 @@ trait IsTeam
 
     /**
      * Remove a member from the team.
+     *
+     * @api
      */
-    public function removeMember(User $user): void
+    public function removeMember(User&ExternalId $user): void
     {
         $this->members()->detach($user);
 

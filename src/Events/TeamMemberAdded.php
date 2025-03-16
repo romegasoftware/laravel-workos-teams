@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
+use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
 class TeamMemberAdded
 {
@@ -16,8 +17,8 @@ class TeamMemberAdded
      * Create a new event instance.
      */
     public function __construct(
-        public ExternalId $team,
-        public User $user,
+        public TeamContract&ExternalId $team,
+        public User&ExternalId $user,
         public string $role
     ) {}
 }

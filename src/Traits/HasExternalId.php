@@ -9,8 +9,8 @@ trait HasExternalId
      */
     public function getExternalIdColumn(): string
     {
-        return defined(static::class.'::EXTERNAL_ID_COLUMN')
-            ? constant(static::class.'::EXTERNAL_ID_COLUMN')
+        return defined(static::class . '::EXTERNAL_ID_COLUMN')
+            ? constant(static::class . '::EXTERNAL_ID_COLUMN')
             : 'external_id';
     }
 
@@ -25,8 +25,8 @@ trait HasExternalId
     /**
      * Set the external ID for the model.
      */
-    public function setExternalId(string $externalServiceId): void
+    public function setExternalId(string $externalId): void
     {
-        $this->setAttribute($this->getExternalIdColumn(), $externalServiceId);
+        $this->setAttribute($this->getExternalIdColumn(), $externalId);
     }
 }

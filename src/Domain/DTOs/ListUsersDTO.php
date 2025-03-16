@@ -2,15 +2,17 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
+use WorkOS\Resource\Order;
+
 class ListUsersDTO
 {
     public function __construct(
         public readonly ?string $organizationId = null,
         public readonly ?string $email = null,
-        public readonly ?int $limit = 10,
+        public readonly int $limit = 10,
         public readonly ?string $before = null,
         public readonly ?string $after = null,
-        public readonly ?string $order = null,
+        public readonly ?Order $order = null,
     ) {}
 
     public function toArray(): array

@@ -2,10 +2,11 @@
 
 namespace RomegaSoftware\WorkOSTeams\Console\Commands;
 
-use App\Models\Team;
 use Illuminate\Console\Command;
-use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
+use RomegaSoftware\WorkOSTeams\Models\Team;
+use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
+use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\CreateOrganizationDTO;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\UpdateOrganizationDTO;
 
@@ -83,7 +84,7 @@ class SyncWorkOSOrganizations extends Command
         return 0;
     }
 
-    protected function syncOrganization(TeamContract $team): int
+    protected function syncOrganization(TeamContract&ExternalId $team): int
     {
         if (! $team->getExternalId()) {
             $this->info("Creating WorkOS organization for team '{$team->name}'...");

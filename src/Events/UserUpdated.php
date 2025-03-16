@@ -2,10 +2,11 @@
 
 namespace RomegaSoftware\WorkOSTeams\Events;
 
-use App\Models\User;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 
 class UserUpdated
 {
@@ -15,6 +16,6 @@ class UserUpdated
      * Create a new event instance.
      */
     public function __construct(
-        public User $user,
+        public User&ExternalId $user,
     ) {}
 }

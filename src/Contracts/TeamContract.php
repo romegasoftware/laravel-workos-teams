@@ -2,8 +2,18 @@
 
 namespace RomegaSoftware\WorkOSTeams\Contracts;
 
+/**
+ * @mixin \Illuminate\Database\Eloquent\Model
+ */
 interface TeamContract
 {
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public static function bootImplementsTeamContract(): void;
+
     /**
      * Get the name of the team.
      */
@@ -15,31 +25,11 @@ interface TeamContract
     public function getDescription(): ?string;
 
     /**
-     * Update the team with the given attributes.
+     * Update the model in the database without raising any events.
      *
-     * @param  array<string, mixed>  $attributes
+     * @param  array  $attributes
+     * @param  array  $options
+     * @return bool
      */
-    public function update(array $attributes = []): bool;
-
-    /**
-     * Eager load relations on the model.
-     *
-     * @param  array|string  $relations
-     * @return $this
-     */
-    public function load($relations);
-
-    /**
-     * Delete the model from the database.
-     *
-     * @return bool|null
-     */
-    public function delete();
-
-    /**
-     * Update the model in the database.
-     *
-     * @param  array<string, mixed>  $attributes
-     */
-    public function updateQuietly(array $attributes = []): bool;
+    public function updateQuietly(array $attributes = [], array $options = []);
 }

@@ -9,7 +9,10 @@ use RomegaSoftware\WorkOSTeams\Services\WorkOSCacheService;
 use RomegaSoftware\WorkOSTeams\Services\WorkOSLogService;
 use RomegaSoftware\WorkOSTeams\Services\WorkOSSessionService;
 
-class WorkOSTeamsServiceProvider extends ServiceProvider
+/**
+ * @api
+ */
+final class WorkOSTeamsServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.

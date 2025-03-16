@@ -40,11 +40,6 @@ return new class extends Migration
 
             $table->unique(['team_id', 'email']);
         });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('workos_id')->nullable()->unique()->after('email');
-            $table->foreignId('current_team_id')->nullable()->after('workos_id');
-        });
     }
 
     /**
@@ -52,11 +47,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('workos_id');
-            $table->dropColumn('current_team_id');
-        });
-
         Schema::dropIfExists('team_invitations');
         Schema::dropIfExists('team_members');
         Schema::dropIfExists('teams');

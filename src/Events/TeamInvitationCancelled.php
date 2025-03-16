@@ -5,7 +5,7 @@ namespace RomegaSoftware\WorkOSTeams\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
+use RomegaSoftware\WorkOSTeams\Models\AbstractTeamInvitation;
 
 class TeamInvitationCancelled
 {
@@ -15,6 +15,6 @@ class TeamInvitationCancelled
      * Create a new event instance.
      */
     public function __construct(
-        public TeamInvitation $invitation
+        public AbstractTeamInvitation $invitation
     ) {}
 }

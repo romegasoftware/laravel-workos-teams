@@ -5,6 +5,8 @@ namespace RomegaSoftware\WorkOSTeams\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
+use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
 class TeamUpdated
 {
@@ -14,6 +16,6 @@ class TeamUpdated
      * Create a new event instance.
      */
     public function __construct(
-        public $team
+        public TeamContract&ExternalId $team
     ) {}
 }

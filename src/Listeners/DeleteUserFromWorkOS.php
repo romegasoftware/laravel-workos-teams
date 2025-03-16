@@ -19,7 +19,6 @@ class DeleteUserFromWorkOS
      */
     public function handle(UserDeleted $event): void
     {
-        $user = $event->user;
-        $this->userRepository->delete($user);
+        $this->userRepository->delete($event->user);
     }
 }

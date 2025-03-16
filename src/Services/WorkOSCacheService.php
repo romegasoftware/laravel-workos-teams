@@ -4,20 +4,12 @@ namespace RomegaSoftware\WorkOSTeams\Services;
 
 use Illuminate\Support\Facades\Cache;
 
-class WorkOSCacheService
+final class WorkOSCacheService
 {
     /**
      * Cache TTL in seconds (5 minutes)
      */
     protected const CACHE_TTL = 300;
-
-    /**
-     * Get a cached value
-     */
-    public function get(string $key): mixed
-    {
-        return Cache::get($key);
-    }
 
     /**
      * Set a cached value
@@ -38,7 +30,7 @@ class WorkOSCacheService
     /**
      * Remember a value for a given key
      */
-    public function remember(string $key, callable $callback): mixed
+    public function remember(string $key, \Closure $callback): mixed
     {
         return Cache::remember($key, self::CACHE_TTL, $callback);
     }
