@@ -23,6 +23,8 @@
         "phpunit/phpunit": "^9.5|^10.0|^11.0",
         "phpstan/phpstan": "*",
         "vimeo/psalm": "^6.8",
+        "livewire/flux": "^2.0",
+        "livewire/volt": "^1.6.7",
         "psalm/plugin-laravel": "^3.0"
     },
     "autoload": {

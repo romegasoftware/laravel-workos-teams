@@ -3,11 +3,12 @@
 namespace RomegaSoftware\WorkOSTeams\Livewire\Teams;
 
 use Flux\Flux;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Title;
+use Illuminate\Support\Facades\Auth;
+use RomegaSoftware\WorkOSTeams\Models\Team;
+use Illuminate\Pagination\LengthAwarePaginator;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
 #[Title('Teams')]
@@ -29,21 +30,26 @@ class TeamsIndex extends Component
         $this->resetPage();
     }
 
-    public function deleteTeam(TeamContract $team)
+    public function deleteTeam($team)
     {
+        $teamModel = config('workos-teams.models.team', Team::class);
+
+        $team = $teamModel::find($team);
+
         $this->authorize('delete', $team);
 
         $team->delete();
 
         Flux::toast(
-            heading: 'Team Deleted',
-            text: 'Team deleted successfully!',
+            heading: __('Team Deleted'),
+            text: __('Team deleted successfully!'),
             variant: 'success',
         );
     }
 
     public function getTeamProperty()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $collection = $user->allTeams()
@@ -71,5 +77,10 @@ class TeamsIndex extends Component
             $page,
             ['path' => request()->url(), 'query' => request()->query()]
         );
+    }
+
+    public function render()
+    {
+        return view('workos-teams::livewire.teams.teams-index');
     }
 }

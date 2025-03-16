@@ -15,7 +15,7 @@ new class extends Component {
     use AuthorizesRequests;
     use WithPagination;
 
-    public TeamContract&ExternalId $team;
+    public $team;
 
     public ?string $selectedMemberId = null;
 
@@ -79,7 +79,7 @@ new class extends Component {
     @if ($this->members()->isEmpty())
         <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('No members in this team yet.') }}</p>
     @else
-        <flux:table :paginate="{{ $this->members }}">
+        <flux:table :paginate="$this->members">
             <flux:table.columns>
                 <flux:table.column>{{ __('Name') }}</flux:table.column>
                 <flux:table.column>{{ __('Email') }}</flux:table.column>

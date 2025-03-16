@@ -63,8 +63,8 @@ class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
 
         $teamModel = config('workos-teams.models.team', Team::class);
 
-        $team = $teamModel::findOrCreate(
-            [$teamModel::getExternalIdColumn() => $userFromWorkOS->organizationId],
+        $team = $teamModel::firstOrCreate(
+            [(new $teamModel)->getExternalIdColumn() => $userFromWorkOS->organizationId],
             [
                 'name' => $organization->name,
             ]

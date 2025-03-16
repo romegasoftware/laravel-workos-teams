@@ -3,14 +3,15 @@
 namespace RomegaSoftware\WorkOSTeams\Livewire\Teams;
 
 use Flux\Flux;
-use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\Attributes\Title;
+use RomegaSoftware\WorkOSTeams\Models\Team;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
 #[Title('Edit Team')]
 class TeamEdit extends Component
 {
-    public TeamContract $team;
+    public $team;
 
     public string $name = '';
 
@@ -24,8 +25,12 @@ class TeamEdit extends Component
         'description' => 'nullable|string|max:1000',
     ];
 
-    public function mount(): void
+    public function mount($team): void
     {
+        $teamModel = config('workos-teams.models.team', Team::class);
+
+        $this->team = $teamModel::find($team);
+
         $this->authorize('update', $this->team);
 
         $this->name = $this->team->getName();
@@ -43,11 +48,16 @@ class TeamEdit extends Component
         ]);
 
         Flux::toast(
-            heading: 'Team Updated',
-            text: 'Team updated successfully!',
+            heading: __('Team Updated'),
+            text: __('Team updated successfully!'),
             variant: 'success',
         );
 
         $this->redirectRoute('teams.show', $this->team);
+    }
+
+    public function render()
+    {
+        return view('workos-teams::livewire.teams.team-edit');
     }
 }

@@ -9,8 +9,8 @@ use RomegaSoftware\WorkOSTeams\Models\Team;
 use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\FindOrganizationDTO;
 
-Route::prefix(config('workos-teams.routes.prefix', 'webhooks'))
-    ->middleware(config('workos-teams.routes.middleware', ['api']))
+Route::prefix(config('workos-teams.routes.webhooks.prefix', 'webhooks'))
+    ->middleware(config('workos-teams.routes.webhooks.middleware', ['api']))
     ->group(function () {
         Route::post('work-os/user-registration-action', function (Request $request) {
 
@@ -35,14 +35,14 @@ Route::prefix(config('workos-teams.routes.prefix', 'webhooks'))
             ]);
 
             // User has been invited to an organization, and accepted the invitation
-            if (isset($webhook->invitation->getKey())) {
+            if ($webhook->invitation->getKey()) {
                 $teamModel = config('workos-teams.models.team', Team::class);
                 $teamInvitationModel = config('workos-teams.models.team_invitation', TeamInvitation::class);
 
                 $organization = $this->organizationRepository->find(new FindOrganizationDTO(id: $webhook->invitation->organization_id));
 
-                $team = $teamModel::findOrCreate(
-                    [$teamModel::getExternalIdColumn() => $webhook->invitation->organization_id],
+                $team = $teamModel::firstOrCreate(
+                    [(new $teamModel)->getExternalIdColumn() => $webhook->invitation->organization_id],
                     [
                         'name' => $organization->name,
                     ]

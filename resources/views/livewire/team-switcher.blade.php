@@ -10,9 +10,13 @@ new class extends Component {
     /**
      * Switch to the given team.
      */
-    public function switchTeam(TeamContract&ExternalId $team)
+    public function switchTeam($team)
     {
         $user = Auth::user();
+
+        $teamModel = config('workos-teams.models.team', Team::class);
+
+        $team = $teamModel::find($team);
 
         // Use the User model's switchTeam method which handles WorkOS authentication
         $user->switchTeam($team);
@@ -49,7 +53,7 @@ new class extends Component {
     @else
         @foreach ($this->teams as $team)
             <flux:menu.item
-                :active="{{ $this->currentTeam && $this->currentTeam->getKey() === $team->getKey() }}"
+                active="{{ $this->currentTeam && $this->currentTeam->getKey() === $team->getKey() }}"
                 wire:click="switchTeam({{ $team->getKey() }})"
             >
                 <div class="flex items-center">

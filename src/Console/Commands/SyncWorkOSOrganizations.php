@@ -47,7 +47,7 @@ final class SyncWorkOSOrganizations extends Command
     public function handle(): bool|int
     {
         $teamModel = config('workos-teams.models.team', Team::class);
-        $this->externalIdColumn = $teamModel::getExternalIdColumn();
+        $this->externalIdColumn = (new $teamModel)->getKeyName();
 
         $teamId = $this->option('team-id');
 

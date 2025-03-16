@@ -20,7 +20,7 @@
     </x-slot>
 
     @can('inviteTeamMember', $team)
-        <flux:card class="mb-12 max-w-4xl mx-auto">
+        <flux:card class="mx-auto mb-12 max-w-4xl">
             <div class="space-y-2">
                 <flux:heading size="lg">{{ __('Invite Team Member') }}</flux:heading>
                 <livewire:teams.invite-team-member :team="$team" />

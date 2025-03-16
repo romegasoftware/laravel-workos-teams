@@ -31,7 +31,7 @@ trait IsTeam
      */
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'team_members');
+        return $this->belongsToMany(User::class, 'team_members')->withPivot('role');
     }
 
     /**

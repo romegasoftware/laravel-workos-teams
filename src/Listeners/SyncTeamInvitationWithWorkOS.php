@@ -5,10 +5,10 @@ namespace RomegaSoftware\WorkOSTeams\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use RomegaSoftware\WorkOSTeams\Contracts\UserRepository;
 use RomegaSoftware\WorkOSTeams\Events\TeamInvitationCreated;
-use RomegaSoftware\WorkOSTeams\Events\TeamInvitationCancelled;
+use RomegaSoftware\WorkOSTeams\Events\TeamInvitationDeleted;
 
 /**
- * @psalm-suppress UnusedClass This class is used as an event listener for TeamInvitationCreated or TeamInvitationCancelled through Laravel's event system
+ * @psalm-suppress UnusedClass This class is used as an event listener for TeamInvitationCreated or TeamInvitationDeleted through Laravel's event system
  */
 final class SyncTeamInvitationWithWorkOS implements ShouldQueue
 {
@@ -22,9 +22,11 @@ final class SyncTeamInvitationWithWorkOS implements ShouldQueue
     /**
      * Handle the invitation event.
      */
-    public function handle(TeamInvitationCreated|TeamInvitationCancelled $event): void
+    public function handle(TeamInvitationCreated|TeamInvitationDeleted $event): void
     {
         if ($event instanceof TeamInvitationCreated) {
+
+            dd($event);
             $invitation = $event->invitation;
 
             /** @var ?\App\Models\User&\RomegaSoftware\WorkOSTeams\Contracts\ExternalId $inviter */
@@ -39,7 +41,7 @@ final class SyncTeamInvitationWithWorkOS implements ShouldQueue
                 roleSlug: $invitation->role
             );
         }
-        if ($event instanceof TeamInvitationCancelled) {
+        if ($event instanceof TeamInvitationDeleted) {
             // Revoke the invitation in WorkOS
             $this->userRepository->revokeInvitation(
                 $event->invitation->team,

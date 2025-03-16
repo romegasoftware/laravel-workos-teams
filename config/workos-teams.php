@@ -30,8 +30,14 @@ return [
     |
     */
     'routes' => [
-        'prefix' => 'webhooks',
-        'middleware' => ['api'], // e.g. ['api']
+        'web' => [
+            'prefix' => '',
+            'middleware' => ['web'], // e.g. ['web']
+        ],
+        'webhooks' => [
+            'prefix' => 'webhooks',
+            'middleware' => ['api'], // e.g. ['api']
+        ],
     ],
 
     /*

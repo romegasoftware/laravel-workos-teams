@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 use RomegaSoftware\WorkOSTeams\Contracts\UserRepository;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @mixin \Illuminate\Database\Eloquent\Model
@@ -29,6 +30,9 @@ trait HasTeams
         });
         static::deleted(function ($model) {
             event(new UserDeleted($model));
+        });
+        static::addGlobalScope('currentTeam', function (Builder $builder) {
+            $builder->with('currentTeam');
         });
     }
 

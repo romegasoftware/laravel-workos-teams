@@ -3,9 +3,10 @@
 namespace RomegaSoftware\WorkOSTeams\Livewire\Teams;
 
 use Flux\Flux;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\Attributes\Title;
+use Illuminate\Support\Facades\Auth;
+use RomegaSoftware\WorkOSTeams\Models\Team;
 
 #[Title('Create Team')]
 class TeamCreate extends Component
@@ -24,7 +25,7 @@ class TeamCreate extends Component
         $this->validate();
 
         // Create the team in the database
-        $team = config('workos-teams.models.team')::create([
+        $team = config('workos-teams.models.team', Team::class)::create([
             'name' => $this->name,
             'description' => $this->description,
         ]);
@@ -39,5 +40,10 @@ class TeamCreate extends Component
         );
 
         return $this->redirectRoute('teams.show', $team);
+    }
+
+    public function render()
+    {
+        return view('workos-teams::livewire.teams.team-create');
     }
 }
