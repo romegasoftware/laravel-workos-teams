@@ -12,6 +12,9 @@ use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 use RomegaSoftware\WorkOSTeams\Contracts\UserRepository;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @mixin \Illuminate\Database\Eloquent\Model
+ */
 trait HasTeams
 {
     /**
@@ -27,6 +30,16 @@ trait HasTeams
         static::deleted(function ($model) {
             event(new UserDeleted($model));
         });
+    }
+
+    /**
+     * Initialize the trait.
+     *
+     * @return void
+     */
+    public function initializeHasTeams()
+    {
+        $this->mergeFillable(['current_team_id']);
     }
 
     /**

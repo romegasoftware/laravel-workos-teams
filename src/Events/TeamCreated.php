@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
-class TeamCreated
+final class TeamCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

@@ -2,21 +2,21 @@
 
 namespace RomegaSoftware\WorkOSTeams\Events;
 
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Models\AbstractTeamInvitation;
 
-class TeamInvitationCreated
+final class TeamInvitationCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * The inviter user.
      */
-    public ?ExternalId $inviter;
+    public ?User $inviter;
 
     /**
      * Create a new event instance.

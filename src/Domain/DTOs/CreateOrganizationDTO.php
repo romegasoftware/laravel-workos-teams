@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
-class CreateOrganizationDTO
+final class CreateOrganizationDTO
 {
     public function __construct(
         public readonly string $name,
@@ -12,6 +12,9 @@ class CreateOrganizationDTO
         public readonly ?array $metadata = null,
     ) {}
 
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function toArray(): array
     {
         return [

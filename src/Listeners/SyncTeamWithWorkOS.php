@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace RomegaSoftware\WorkOSTeams\Listeners;
 
 use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\CreateOrganizationDTO;
@@ -8,8 +8,12 @@ use RomegaSoftware\WorkOSTeams\Domain\DTOs\UpdateOrganizationDTO;
 use RomegaSoftware\WorkOSTeams\Events\TeamCreated;
 use RomegaSoftware\WorkOSTeams\Events\TeamDeleted;
 use RomegaSoftware\WorkOSTeams\Events\TeamUpdated;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SyncTeamWithWorkOS
+/**
+ * @psalm-suppress UnusedClass This class is used as an event listener for TeamCreated, TeamUpdated, or TeamDeleted through Laravel's event system
+ */
+final class SyncTeamWithWorkOS implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -27,13 +31,15 @@ class SyncTeamWithWorkOS
 
         if ($event instanceof TeamDeleted) {
             $this->organizationRepository->delete($team);
-        } elseif ($event instanceof TeamUpdated) {
+        }
+        if ($event instanceof TeamUpdated) {
             $this->organizationRepository->update($team, new UpdateOrganizationDTO(
-                name: $team->name,
+                name: $team->getAttribute('name'),
             ));
-        } elseif ($event instanceof TeamCreated) {
+        }
+        if ($event instanceof TeamCreated) {
             $this->organizationRepository->create(new CreateOrganizationDTO(
-                name: $team->name,
+                name: $team->getAttribute('name'),
             ));
         }
     }

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 
-class UserUpdated
+final class UserUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

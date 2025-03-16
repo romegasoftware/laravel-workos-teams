@@ -7,7 +7,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use RomegaSoftware\WorkOSTeams\Events\TeamCreated;
 use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 
-class SyncWorkOSOrganizationMembers implements ShouldQueue
+/**
+ * @psalm-suppress UnusedClass This class is used as an event listener for TeamCreated through Laravel's event system
+ */
+final class SyncWorkOSOrganizationMembers implements ShouldQueue
 {
     /**
      * Create the event listener.

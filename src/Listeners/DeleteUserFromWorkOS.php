@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Listeners;
+namespace RomegaSoftware\WorkOSTeams\Listeners;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use RomegaSoftware\WorkOSTeams\Contracts\UserRepository;
 use RomegaSoftware\WorkOSTeams\Events\UserDeleted;
 
-class DeleteUserFromWorkOS
+/**
+ * @psalm-suppress UnusedClass This class is used as an event listener for UserDeleted through Laravel's event system
+ */
+final class DeleteUserFromWorkOS implements ShouldQueue
 {
     /**
      * Create the event listener.

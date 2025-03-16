@@ -2,10 +2,12 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
-class CreateUserDTO
+final class CreateUserDTO
 {
     /**
      * Create a new CreateUserDTO instance.
+     *
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function __construct(
         public readonly string $id,

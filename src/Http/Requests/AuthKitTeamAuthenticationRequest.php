@@ -9,6 +9,10 @@ use Laravel\WorkOS\Http\Requests\AuthKitAuthenticationRequest;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\FindOrganizationDTO;
 use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 
+/**
+ * @api
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
 {
     public function __construct(
@@ -20,25 +24,25 @@ class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
     {
         return parent::authenticate(
             findUsing: $findUsing,
-            createUsing: $createUsing ?? $this->createUsing,
-            updateUsing: $updateUsing ?? $this->updateUsing
+            createUsing: $createUsing ?? $this->createUsing(...),
+            updateUsing: $updateUsing ?? $this->updateUsing(...),
         );
     }
 
     #[\Override]
-    protected function createUsing(User $userFromWorkOS): AppUser
+    protected function createUsing(User $user): AppUser
     {
-        $createdAppUser = parent::createUsing($userFromWorkOS);
+        $createdAppUser = parent::createUsing($user);
 
-        $appUser = $this->handleOrganization($createdAppUser, $userFromWorkOS);
+        $appUser = $this->handleOrganization($createdAppUser, $user);
 
         return $appUser;
     }
 
     #[\Override]
-    protected function updateUsing(AppUser $existingAppUser, User $userFromWorkOS): AppUser
+    protected function updateUsing(AppUser $user, User $userFromWorkOS): AppUser
     {
-        $updatedAppUser = parent::updateUsing($existingAppUser, $userFromWorkOS);
+        $updatedAppUser = parent::updateUsing($user, $userFromWorkOS);
 
         $appUser = $this->handleOrganization($updatedAppUser, $userFromWorkOS);
 
@@ -47,7 +51,7 @@ class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
 
     public function handleOrganization(AppUser $existingAppUser, User $userFromWorkOS): AppUser
     {
-        if (! $userFromWorkOS->organizationId) {
+        if ($userFromWorkOS->organizationId === null) {
             return $existingAppUser;
         }
 

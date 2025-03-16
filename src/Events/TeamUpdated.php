@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
-class TeamUpdated
+final class TeamUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

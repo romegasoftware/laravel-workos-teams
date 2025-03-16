@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use Illuminate\Foundation\Auth\User;
 
-class UserDeleted
+final class UserDeleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

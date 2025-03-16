@@ -9,7 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
-class TeamMemberRemoved
+final class TeamMemberRemoved
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

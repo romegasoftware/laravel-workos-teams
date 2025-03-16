@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Listeners;
+namespace RomegaSoftware\WorkOSTeams\Listeners;
 
+use RuntimeException;
 use Illuminate\Support\Str;
+use RomegaSoftware\WorkOSTeams\Events\UserUpdated;
 use RomegaSoftware\WorkOSTeams\Contracts\UserRepository;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\UpdateUserDTO;
-use RomegaSoftware\WorkOSTeams\Events\UserUpdated;
 
-class SyncUserWithWorkOS
+/**
+ * @psalm-suppress UnusedClass This class is used as an event listener for UserUpdated through Laravel's event system
+ */
+final class SyncUserWithWorkOS
 {
     public function __construct(
         protected UserRepository $userRepository,
@@ -28,9 +32,9 @@ class SyncUserWithWorkOS
         }
 
         $this->userRepository->update($user, new UpdateUserDTO(
-            id: $user->getExternalId(),
-            firstName: Str::before($user->name, ' '),
-            lastName: Str::after($user->name, ' '),
+            id: $user->getExternalId() ?? throw new RuntimeException('User has no external ID'),
+            firstName: Str::before($user->getAttribute('name'), ' '),
+            lastName: Str::after($user->getAttribute('name'), ' '),
         ));
     }
 }

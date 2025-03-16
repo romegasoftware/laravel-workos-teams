@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain;
 
-class OrganizationInvitation
+final class OrganizationInvitation
 {
     public function __construct(
         public readonly string $id,
@@ -37,6 +37,9 @@ class OrganizationInvitation
         );
     }
 
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function toArray(): array
     {
         return [

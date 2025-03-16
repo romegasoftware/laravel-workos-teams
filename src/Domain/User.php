@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain;
 
-class User
+final class User
 {
     public function __construct(
         public readonly string $id,
@@ -25,6 +25,9 @@ class User
         );
     }
 
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function toArray(): array
     {
         return [

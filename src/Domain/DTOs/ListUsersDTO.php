@@ -4,8 +4,11 @@ namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
 use WorkOS\Resource\Order;
 
-class ListUsersDTO
+final class ListUsersDTO
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct(
         public readonly ?string $organizationId = null,
         public readonly ?string $email = null,

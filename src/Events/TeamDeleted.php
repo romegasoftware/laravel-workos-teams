@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
-class TeamDeleted
+final class TeamDeleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

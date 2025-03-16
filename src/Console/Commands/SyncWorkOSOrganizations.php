@@ -3,6 +3,7 @@
 namespace RomegaSoftware\WorkOSTeams\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
 use RomegaSoftware\WorkOSTeams\Models\Team;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
@@ -10,7 +11,7 @@ use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\CreateOrganizationDTO;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\UpdateOrganizationDTO;
 
-class SyncWorkOSOrganizations extends Command
+final class SyncWorkOSOrganizations extends Command
 {
     /**
      * The name and signature of the console command.
@@ -41,18 +42,20 @@ class SyncWorkOSOrganizations extends Command
      *
      * @return bool|int
      *
-     * @psalm-return 0|1|bool
+     * @psalm-return bool|int
      */
-    public function handle(): int|bool
+    public function handle(): bool|int
     {
         $teamModel = config('workos-teams.models.team', Team::class);
         $this->externalIdColumn = $teamModel::getExternalIdColumn();
 
         $teamId = $this->option('team-id');
 
-        if ($teamId) {
+        if ($teamId !== null) {
             $team = $teamModel::find($teamId);
             if (! $team) {
+                /** @psalm-suppress RiskyCast */
+                $teamId = (int) $teamId;
                 $this->error("Team with ID {$teamId} not found.");
 
                 return 1;
@@ -61,32 +64,31 @@ class SyncWorkOSOrganizations extends Command
             return $this->syncOrganization($team);
         }
 
-        $teams = collect();
+        $teams = $teamModel::whereNotNull($this->externalIdColumn);
 
         // Sync all teams with organizations
-        $teams->push(...$teamModel::whereNotNull($this->externalIdColumn)->get());
         $this->info("Found {$teams->count()} teams with WorkOS organizations.");
 
         // Create organizations for teams without them (if automatic sync is enabled)
         if (config('workos-teams.features.automatic_organization_sync', true)) {
-            $teams->push(...$teamsWithOrg = $teamModel::whereNull($this->externalIdColumn)->get());
-            $this->info("Found {$teamsWithOrg->count()} teams without WorkOS organizations.");
+            $teams->orWhereNull($this->externalIdColumn);
+            $this->info("Found {$teams->count()} teams without WorkOS organizations.");
         }
 
-        foreach ($teams as $team) {
+        return $teams->get()->each(function (Model&TeamContract&ExternalId $team) {
             $sync = $this->syncOrganization($team);
 
             if (! $sync) {
                 return 1;
             }
-        }
-
-        return 0;
+        })->then(function () {
+            return 0;
+        });
     }
 
-    protected function syncOrganization(TeamContract&ExternalId $team): int
+    protected function syncOrganization(Model&TeamContract&ExternalId $team): int
     {
-        if (! $team->getExternalId()) {
+        if ($team->getAttribute($this->externalIdColumn) === null) {
             $this->info("Creating WorkOS organization for team '{$team->name}'...");
 
             $organization = $this->organizationRepository->create(new CreateOrganizationDTO(name: $team->name));
@@ -101,7 +103,7 @@ class SyncWorkOSOrganizations extends Command
 
             $this->info("Created WorkOS organization '{$organization->name}' (ID: {$organization->id}) for team '{$team->name}'.");
         } else {
-            $this->info("Syncing team '{$team->name}' with WorkOS organization ID: {$team->getExternalId()}");
+            $this->info("Syncing team '{$team->getAttribute('name')}' with WorkOS organization ID: {$team->getAttribute($this->externalIdColumn)}");
 
             $synced = $this->organizationRepository->update($team, new UpdateOrganizationDTO(name: $team->name));
 

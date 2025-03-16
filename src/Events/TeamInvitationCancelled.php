@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use RomegaSoftware\WorkOSTeams\Models\AbstractTeamInvitation;
 
-class TeamInvitationCancelled
+final class TeamInvitationCancelled
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
