@@ -44,6 +44,8 @@ class TeamsIndex extends Component
             text: __('Team deleted successfully!'),
             variant: 'success',
         );
+
+        $this->dispatch('team-deleted');
     }
 
     public function getTeamProperty()

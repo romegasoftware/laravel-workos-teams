@@ -71,7 +71,7 @@ class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
             ]
         );
 
-        $existingAppUser->teams()->attach($team, ['role' => 'owner']);
+        $existingAppUser->teams()->syncWithoutDetaching($team, ['role' => 'owner']);
 
         if ($team) {
             $existingAppUser->updateQuietly(['current_team_id' => $team->getKey()]);

@@ -48,6 +48,8 @@ class TeamEdit extends Component
         );
 
         $this->redirectRoute('teams.show', $this->team);
+
+        $this->dispatch('team-updated');
     }
 
     public function render()

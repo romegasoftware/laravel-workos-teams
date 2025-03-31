@@ -36,6 +36,8 @@ class TeamCreate extends Component
         );
 
         return $this->redirectRoute('teams.show', $team);
+
+        $this->dispatch('team-created');
     }
 
     public function render()

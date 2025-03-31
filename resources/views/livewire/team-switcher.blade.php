@@ -1,5 +1,6 @@
 <?php
 
+use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,15 @@ new class extends Component {
         $user = Auth::user();
 
         return $user->currentTeam;
+    }
+
+    #[On('team-created')]
+    #[On('team-updated')]
+    #[On('team-deleted')]
+    public function refreshTeams()
+    {
+        unset($this->teams);
+        unset($this->currentTeam);
     }
 }; ?>
 

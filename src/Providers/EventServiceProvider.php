@@ -21,6 +21,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         \RomegaSoftware\WorkOSTeams\Events\TeamDeleting::class => [
             \RomegaSoftware\WorkOSTeams\Listeners\SyncTeamWithWorkOS::class,
+            \RomegaSoftware\WorkOSTeams\Listeners\UnsetCurrentTeamIdWhenTeamIsDeleted::class,
         ],
 
         // Team member events
