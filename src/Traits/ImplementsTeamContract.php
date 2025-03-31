@@ -16,7 +16,6 @@ trait ImplementsTeamContract
      * Boot the trait.
      *
      * @api
-     * @return void
      */
     public static function bootImplementsTeamContract(): void
     {

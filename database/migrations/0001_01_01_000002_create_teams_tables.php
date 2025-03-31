@@ -15,15 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('workos_organization_id')->nullable()->unique();
-            $table->text('description')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('team_members', function (Blueprint $table) {
+        Schema::create('team_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id');
             $table->foreignId('user_id');
-            $table->string('role')->default('member');
+            $table->string('role')->nullable();
             $table->timestamps();
 
             $table->unique(['team_id', 'user_id']);
@@ -31,14 +30,17 @@ return new class extends Migration
 
         Schema::create('team_invitations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id');
+            $table->foreignId('team_id')->constrained()->cascadeOnDelete();
             $table->string('email');
-            $table->string('role')->default('member');
-            $table->unsignedBigInteger('invited_by');
+            $table->string('role')->nullable();
             $table->string('workos_invitation_id')->nullable()->unique();
             $table->timestamps();
 
             $table->unique(['team_id', 'email']);
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('current_team_id')->nullable()->after('id');
         });
     }
 
@@ -48,7 +50,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('team_invitations');
-        Schema::dropIfExists('team_members');
+        Schema::dropIfExists('team_user');
         Schema::dropIfExists('teams');
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('current_team_id');
+        });
     }
 };

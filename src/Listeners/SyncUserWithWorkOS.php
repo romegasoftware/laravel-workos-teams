@@ -2,11 +2,11 @@
 
 namespace RomegaSoftware\WorkOSTeams\Listeners;
 
-use RuntimeException;
 use Illuminate\Support\Str;
-use RomegaSoftware\WorkOSTeams\Events\UserUpdated;
 use RomegaSoftware\WorkOSTeams\Contracts\UserRepository;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\UpdateUserDTO;
+use RomegaSoftware\WorkOSTeams\Events\UserUpdated;
+use RuntimeException;
 
 /**
  * @psalm-suppress UnusedClass This class is used as an event listener for UserUpdated through Laravel's event system

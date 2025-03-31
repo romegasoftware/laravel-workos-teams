@@ -266,12 +266,10 @@ final class WorkOSUserRepository implements UserRepository
      * IDE type hint until resolved in WorkOS PHP SDK
      * https://github.com/workos/workos-php/pull/264
      *
-     * @param AuthenticationResponse $tokens
      * @psalm-param AuthenticationResponse&object{
      *    access_token: string,
      *    refresh_token: string
      * } $tokens
-     * @return void
      */
     protected function storeTokensInSession(AuthenticationResponse $tokens): void
     {

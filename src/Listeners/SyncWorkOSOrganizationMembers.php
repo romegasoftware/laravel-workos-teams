@@ -2,10 +2,10 @@
 
 namespace App\Listeners;
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use RomegaSoftware\WorkOSTeams\Events\TeamCreated;
+use Illuminate\Support\Facades\Artisan;
 use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
+use RomegaSoftware\WorkOSTeams\Events\TeamCreated;
 
 /**
  * @psalm-suppress UnusedClass This class is used as an event listener for TeamCreated through Laravel's event system

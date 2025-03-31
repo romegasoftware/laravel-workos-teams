@@ -16,7 +16,6 @@ use RomegaSoftware\WorkOSTeams\Events\WorkOSOrganizationDeleted;
 use RomegaSoftware\WorkOSTeams\Events\WorkOSOrganizationUpdated;
 use RomegaSoftware\WorkOSTeams\Services\WorkOSCacheService;
 use RomegaSoftware\WorkOSTeams\Services\WorkOSLogService;
-use RomegaSoftware\WorkOSTeams\Services\WorkOSSessionService;
 use WorkOS\Organizations;
 use WorkOS\UserManagement;
 
@@ -174,8 +173,6 @@ final class WorkOSOrganizationRepository implements OrganizationRepository
 
     /**
      * Add a user to an organization
-     *
-     * @return null|OrganizationMembership
      */
     #[\Override]
     public function addUser(ExternalId $organization, ExternalId $user, string $role = 'member'): ?OrganizationMembership
@@ -269,8 +266,6 @@ final class WorkOSOrganizationRepository implements OrganizationRepository
 
     /**
      * Get a user's organization membership
-     *
-     * @return null|OrganizationMembership
      */
     #[\Override]
     public function getUserMembership(ExternalId $organization, ExternalId $user): ?OrganizationMembership

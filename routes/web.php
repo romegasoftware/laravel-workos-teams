@@ -1,13 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use RomegaSoftware\WorkOSTeams\Livewire\Teams\TeamsIndex;
-use RomegaSoftware\WorkOSTeams\Livewire\Teams\TeamCreate;
-use RomegaSoftware\WorkOSTeams\Livewire\Teams\TeamShow;
-use RomegaSoftware\WorkOSTeams\Livewire\Teams\TeamEdit;
-use Laravel\WorkOS\Http\Middleware\ValidateSessionWithWorkOS;
-use RomegaSoftware\WorkOSTeams\Http\Middleware\EnsureHasTeam;
 use Livewire\Livewire;
+use RomegaSoftware\WorkOSTeams\Http\Middleware\EnsureHasTeam;
+use RomegaSoftware\WorkOSTeams\Livewire\Teams\TeamCreate;
+use RomegaSoftware\WorkOSTeams\Livewire\Teams\TeamEdit;
+use RomegaSoftware\WorkOSTeams\Livewire\Teams\TeamShow;
+use RomegaSoftware\WorkOSTeams\Livewire\Teams\TeamsIndex;
 
 Route::prefix(config('workos-teams.routes.web.prefix', ''))
     ->middleware(config('workos-teams.routes.web.middleware', ['web']))

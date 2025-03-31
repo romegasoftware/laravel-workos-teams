@@ -20,12 +20,12 @@ class ConsoleServiceProvider extends ServiceProvider
 
             // Publish configuration
             $this->publishes([
-                __DIR__ . '/../../config/workos-teams.php' => config_path('workos-teams.php'),
+                __DIR__.'/../../config/workos-teams.php' => config_path('workos-teams.php'),
             ], 'workos-teams-config');
 
             // Publish migrations
             $this->publishes([
-                __DIR__ . '/../../database/migrations' => database_path('migrations'),
+                __DIR__.'/../../database/migrations' => database_path('migrations'),
             ], 'workos-teams-migrations');
         }
     }

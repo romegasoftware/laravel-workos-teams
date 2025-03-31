@@ -13,14 +13,14 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Register views
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'workos-teams');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'workos-teams');
 
         // Register Blade components
         $this->bootComponentPath();
 
         // Optionally publish views
         $this->publishes([
-            __DIR__ . '/../../resources/views' => resource_path('views/vendor/workos-teams'),
+            __DIR__.'/../../resources/views' => resource_path('views/vendor/workos-teams'),
         ], 'workos-teams-views');
     }
 

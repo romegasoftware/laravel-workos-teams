@@ -2,11 +2,11 @@
 
 namespace RomegaSoftware\WorkOSTeams\Listeners;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberAdded;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberRemoved;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberUpdated;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 /**
  * @psalm-suppress UnusedClass This class is used as an event listener for TeamMemberAdded, TeamMemberRemoved, or TeamMemberUpdated through Laravel's event system

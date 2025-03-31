@@ -2,16 +2,16 @@
 
 namespace RomegaSoftware\WorkOSTeams\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use RomegaSoftware\WorkOSTeams\Models\Team;
-use RomegaSoftware\WorkOSTeams\Events\UserDeleted;
-use RomegaSoftware\WorkOSTeams\Events\UserUpdated;
-use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 use RomegaSoftware\WorkOSTeams\Contracts\UserRepository;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Builder;
+use RomegaSoftware\WorkOSTeams\Events\UserDeleted;
+use RomegaSoftware\WorkOSTeams\Events\UserUpdated;
+use RomegaSoftware\WorkOSTeams\Models\Team;
 
 /**
  * @mixin \Illuminate\Database\Eloquent\Model
@@ -53,7 +53,7 @@ trait HasTeams
     {
         $teamModel = config('workos-teams.models.team', Team::class);
 
-        return $this->belongsToMany($teamModel, 'team_members')
+        return $this->belongsToMany($teamModel)
             ->withPivot('role')
             ->withTimestamps();
     }
@@ -84,6 +84,40 @@ trait HasTeams
         }
 
         return $teams->unique(self::getKeyName())->values();
+    }
+
+    /**
+     * Get all teams the user owns.
+     */
+    public function ownedTeams(): BelongsToMany
+    {
+        return $this->teams()->wherePivot('role', 'owner');
+    }
+
+    /**
+     * Determine if the user owns the given team.
+     */
+    public function ownsTeam(Model&TeamContract&ExternalId $team): bool
+    {
+        return $this->ownedTeams->contains($team);
+    }
+
+    /**
+     * Get the user's permissions for the given team.
+     *
+     * @param  mixed  $team
+     */
+    public function teamPermissions(Model&TeamContract&ExternalId $team): array
+    {
+        if ($this->ownsTeam($team)) {
+            return ['*'];
+        }
+
+        if (! $this->belongsToTeam($team)) {
+            return [];
+        }
+
+        return (array) optional($this->teamRole($team))->permissions;
     }
 
     /**
@@ -130,7 +164,7 @@ trait HasTeams
      */
     public function belongsToTeam($team): bool
     {
-        return $this->teams->contains(fn($t) => $t->getKey() === $team->getKey());
+        return $this->teams->contains(fn ($t) => $t->getKey() === $team->getKey());
     }
 
     /**

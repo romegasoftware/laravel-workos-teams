@@ -14,7 +14,7 @@ class VoltServiceProvider extends ServiceProvider
     {
         if (class_exists(Volt::class)) {
             Volt::mount([
-                __DIR__ . '/../../resources/views/livewire',
+                __DIR__.'/../../resources/views/livewire',
                 resource_path('views/vendor/workos-teams'),
             ]);
         }

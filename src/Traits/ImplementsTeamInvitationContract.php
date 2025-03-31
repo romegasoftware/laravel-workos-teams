@@ -2,12 +2,10 @@
 
 namespace RomegaSoftware\WorkOSTeams\Traits;
 
-use Illuminate\Foundation\Auth\User;
-use RomegaSoftware\WorkOSTeams\Models\Team;
-use RomegaSoftware\WorkOSTeams\Traits\HasExternalId;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use RomegaSoftware\WorkOSTeams\Events\TeamInvitationCreated;
 use RomegaSoftware\WorkOSTeams\Events\TeamInvitationDeleted;
+use RomegaSoftware\WorkOSTeams\Models\Team;
 
 trait ImplementsTeamInvitationContract
 {
@@ -41,16 +39,5 @@ trait ImplementsTeamInvitationContract
     public function team(): BelongsTo
     {
         return $this->belongsTo(config('workos-teams.models.team', Team::class));
-    }
-
-    /**
-     * Get the user that sent the invitation.
-     *
-     * @api
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User>
-     */
-    public function inviter(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'invited_by');
     }
 }

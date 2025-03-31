@@ -9,8 +9,8 @@ trait HasExternalId
      */
     public function getExternalIdColumn(): string
     {
-        return defined(static::class . '::EXTERNAL_ID_COLUMN')
-            ? constant(static::class . '::EXTERNAL_ID_COLUMN')
+        return defined(static::class.'::EXTERNAL_ID_COLUMN')
+            ? constant(static::class.'::EXTERNAL_ID_COLUMN')
             : 'external_id';
     }
 

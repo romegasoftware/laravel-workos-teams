@@ -2,10 +2,10 @@
 
 namespace RomegaSoftware\WorkOSTeams\Providers;
 
-use Livewire\Livewire;
-use Illuminate\Support\Str;
-use Symfony\Component\Finder\Finder;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Livewire\Livewire;
+use Symfony\Component\Finder\Finder;
 
 class LivewireServiceProvider extends ServiceProvider
 {
@@ -24,13 +24,13 @@ class LivewireServiceProvider extends ServiceProvider
      */
     protected function registerLivewireComponents(): void
     {
-        $finder = new Finder();
-        $finder->files()->in(__DIR__ . '/../Livewire')->name('*.php');
+        $finder = new Finder;
+        $finder->files()->in(__DIR__.'/../Livewire')->name('*.php');
 
         foreach ($finder as $file) {
             $componentName = str_replace('.php', '', $file->getRelativePathname());
 
-            $componentClass = 'RomegaSoftware\\WorkOSTeams\\Livewire\\' . str_replace('/', '\\', $componentName);
+            $componentClass = 'RomegaSoftware\\WorkOSTeams\\Livewire\\'.str_replace('/', '\\', $componentName);
 
             // Convert component name to kebab case for Livewire registration
             $componentName = Str::of($componentName)

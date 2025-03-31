@@ -97,7 +97,6 @@ class TeamInvitation extends Model implements ExternalId
         'team_id',
         'email',
         'role',
-        'invited_by',
         'workos_invitation_id',
     ];
 

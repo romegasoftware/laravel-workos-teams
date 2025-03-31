@@ -2,15 +2,16 @@
 
 namespace RomegaSoftware\WorkOSTeams\Http\Requests;
 
-use Laravel\WorkOS\User;
 use App\Models\User as AppUser;
-use RomegaSoftware\WorkOSTeams\Models\Team;
 use Laravel\WorkOS\Http\Requests\AuthKitAuthenticationRequest;
-use RomegaSoftware\WorkOSTeams\Domain\DTOs\FindOrganizationDTO;
+use Laravel\WorkOS\User;
 use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
+use RomegaSoftware\WorkOSTeams\Domain\DTOs\FindOrganizationDTO;
+use RomegaSoftware\WorkOSTeams\Models\Team;
 
 /**
  * @api
+ *
  * @psalm-suppress PropertyNotSetInConstructor
  */
 class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
@@ -69,6 +70,8 @@ class AuthKitTeamAuthenticationRequest extends AuthKitAuthenticationRequest
                 'name' => $organization->name,
             ]
         );
+
+        $existingAppUser->teams()->attach($team, ['role' => 'owner']);
 
         if ($team) {
             $existingAppUser->updateQuietly(['current_team_id' => $team->getKey()]);

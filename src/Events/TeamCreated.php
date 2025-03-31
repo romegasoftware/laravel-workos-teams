@@ -2,10 +2,10 @@
 
 namespace RomegaSoftware\WorkOSTeams\Events;
 
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Queue\SerializesModels;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 

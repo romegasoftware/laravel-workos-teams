@@ -9,8 +9,6 @@ interface TeamContract
 {
     /**
      * Undocumented function
-     *
-     * @return void
      */
     public static function bootImplementsTeamContract(): void;
 
@@ -27,8 +25,6 @@ interface TeamContract
     /**
      * Update the model in the database without raising any events.
      *
-     * @param  array  $attributes
-     * @param  array  $options
      * @return bool
      */
     public function updateQuietly(array $attributes = [], array $options = []);

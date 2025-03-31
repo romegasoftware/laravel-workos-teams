@@ -2,15 +2,14 @@
 
 namespace RomegaSoftware\WorkOSTeams\Traits;
 
-use Illuminate\Foundation\Auth\User;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
-use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberAdded;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberRemoved;
 use RomegaSoftware\WorkOSTeams\Events\TeamMemberUpdated;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
 
 trait IsTeam
 {
@@ -31,7 +30,7 @@ trait IsTeam
      */
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'team_members')->withPivot('role');
+        return $this->belongsToMany(User::class, 'team_users')->withPivot('role');
     }
 
     /**

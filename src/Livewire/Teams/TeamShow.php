@@ -3,10 +3,9 @@
 namespace RomegaSoftware\WorkOSTeams\Livewire\Teams;
 
 use Flux\Flux;
-use Livewire\Component;
 use Livewire\Attributes\Title;
+use Livewire\Component;
 use RomegaSoftware\WorkOSTeams\Models\Team;
-use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
 #[Title('Team Details')]
 class TeamShow extends Component

@@ -3,14 +3,14 @@
 namespace RomegaSoftware\WorkOSTeams;
 
 use Illuminate\Support\ServiceProvider;
-use RomegaSoftware\WorkOSTeams\Providers\ViewServiceProvider;
-use RomegaSoftware\WorkOSTeams\Providers\VoltServiceProvider;
-use RomegaSoftware\WorkOSTeams\Providers\EventServiceProvider;
-use RomegaSoftware\WorkOSTeams\Providers\RouteServiceProvider;
-use RomegaSoftware\WorkOSTeams\Providers\WorkOSServiceProvider;
 use RomegaSoftware\WorkOSTeams\Providers\ConsoleServiceProvider;
+use RomegaSoftware\WorkOSTeams\Providers\EventServiceProvider;
 use RomegaSoftware\WorkOSTeams\Providers\LivewireServiceProvider;
 use RomegaSoftware\WorkOSTeams\Providers\RepositoryServiceProvider;
+use RomegaSoftware\WorkOSTeams\Providers\RouteServiceProvider;
+use RomegaSoftware\WorkOSTeams\Providers\ViewServiceProvider;
+use RomegaSoftware\WorkOSTeams\Providers\VoltServiceProvider;
+use RomegaSoftware\WorkOSTeams\Providers\WorkOSServiceProvider;
 
 /**
  * @api
@@ -27,11 +27,6 @@ final class WorkOSTeamsServiceProvider extends ServiceProvider
         $this->app->register(WorkOSServiceProvider::class);
         $this->app->register(RepositoryServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
-
-        // Load the VoltServiceProvider conditionally
-        if (class_exists(\Livewire\Volt\Volt::class)) {
-            $this->app->register(VoltServiceProvider::class);
-        }
     }
 
     /**
@@ -44,5 +39,6 @@ final class WorkOSTeamsServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(LivewireServiceProvider::class);
         $this->app->register(ViewServiceProvider::class);
+        $this->app->register(VoltServiceProvider::class);
     }
 }

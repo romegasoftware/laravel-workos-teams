@@ -12,7 +12,7 @@ use RomegaSoftware\WorkOSTeams\Traits\HasWorkOSExternalId;
 
 // Put this inside an `if (false) {}` or similar condition to ensure it never
 // actually loads in production. The IDE and static analyzers will still see it.
-if (!class_exists(User::class)) {
+if (! class_exists(User::class)) {
 
     class User extends Authenticatable implements ExternalId
     {
@@ -54,7 +54,7 @@ if (!class_exists(User::class)) {
         {
             return Str::of($this->name)
                 ->explode(' ')
-                ->map(fn(string $name) => Str::of($name)->substr(0, 1))
+                ->map(fn (string $name) => Str::of($name)->substr(0, 1))
                 ->implode('');
         }
 

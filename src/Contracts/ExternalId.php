@@ -4,6 +4,7 @@ namespace RomegaSoftware\WorkOSTeams\Contracts;
 
 /**
  * @mixin \Illuminate\Database\Eloquent\Model
+ *
  * @property string $id
  */
 interface ExternalId

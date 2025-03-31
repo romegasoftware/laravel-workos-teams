@@ -52,7 +52,6 @@ new class extends Component {
             'team_id' => $this->team->getKey(),
             'email' => $this->email,
             'role' => $this->role,
-            'invited_by' => Auth::id(),
         ]);
 
         // Reset the form

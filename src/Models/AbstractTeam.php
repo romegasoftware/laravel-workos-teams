@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use RomegaSoftware\WorkOSTeams\Contracts\WorkOSTeams;
 use RomegaSoftware\WorkOSTeams\Traits\ImplementsWorkOSTeams;
 
-
 abstract class AbstractTeam extends Model implements WorkOSTeams
 {
-    use ImplementsWorkOSTeams;
-
     /** @use HasFactory<\Illuminate\Database\Eloquent\Factories\Factory> */
     use HasFactory;
+
+    use ImplementsWorkOSTeams;
 
     /**
      * The column name for the external ID.

@@ -3,9 +3,9 @@
 namespace RomegaSoftware\WorkOSTeams\Livewire\Teams;
 
 use Flux\Flux;
-use Livewire\Component;
-use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Title;
+use Livewire\Component;
 use RomegaSoftware\WorkOSTeams\Models\Team;
 
 #[Title('Create Team')]

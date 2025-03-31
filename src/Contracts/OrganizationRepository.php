@@ -32,8 +32,6 @@ interface OrganizationRepository
 
     /**
      * Add a user to an organization
-     *
-     * @return null|OrganizationMembership
      */
     public function addUser(ExternalId $organization, ExternalId $user, string $role = 'member'): ?OrganizationMembership;
 

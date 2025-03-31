@@ -3,13 +3,12 @@
 namespace RomegaSoftware\WorkOSTeams\Livewire\Teams;
 
 use Flux\Flux;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\Title;
-use Illuminate\Support\Facades\Auth;
 use RomegaSoftware\WorkOSTeams\Models\Team;
-use Illuminate\Pagination\LengthAwarePaginator;
-use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
 #[Title('Teams')]
 class TeamsIndex extends Component

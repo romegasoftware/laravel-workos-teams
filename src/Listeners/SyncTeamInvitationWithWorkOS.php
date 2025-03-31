@@ -25,8 +25,6 @@ final class SyncTeamInvitationWithWorkOS implements ShouldQueue
     public function handle(TeamInvitationCreated|TeamInvitationDeleted $event): void
     {
         if ($event instanceof TeamInvitationCreated) {
-
-            dd($event);
             $invitation = $event->invitation;
 
             /** @var ?\App\Models\User&\RomegaSoftware\WorkOSTeams\Contracts\ExternalId $inviter */

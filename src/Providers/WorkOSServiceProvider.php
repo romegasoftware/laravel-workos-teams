@@ -3,8 +3,8 @@
 namespace RomegaSoftware\WorkOSTeams\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use RomegaSoftware\WorkOSTeams\Services\WorkOSLogService;
 use RomegaSoftware\WorkOSTeams\Services\WorkOSCacheService;
+use RomegaSoftware\WorkOSTeams\Services\WorkOSLogService;
 use RomegaSoftware\WorkOSTeams\Services\WorkOSSessionService;
 
 class WorkOSServiceProvider extends ServiceProvider
@@ -21,7 +21,7 @@ class WorkOSServiceProvider extends ServiceProvider
 
         // Register configurations
         $this->mergeConfigFrom(
-            __DIR__ . '/../../config/workos-teams.php',
+            __DIR__.'/../../config/workos-teams.php',
             'workos-teams'
         );
     }
