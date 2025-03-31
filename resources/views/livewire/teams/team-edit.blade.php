@@ -16,13 +16,6 @@
                 wire:model="name"
             />
 
-            <flux:textarea
-                label="{{ __('Description') }}"
-                placeholder="{{ __('Enter team description') }}"
-                rows="3"
-                wire:model="description"
-            />
-
             @can('delete', $team)
                 <div class="border-t border-gray-200 pt-6 dark:border-gray-700">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('Delete Team') }}</h3>

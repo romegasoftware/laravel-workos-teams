@@ -5,10 +5,9 @@ namespace RomegaSoftware\WorkOSTeams\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
-use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
+use RomegaSoftware\WorkOSTeams\Models\AbstractTeamInvitation;
 
-final class TeamDeleted
+final class TeamInvitationDeleting
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -16,6 +15,6 @@ final class TeamDeleted
      * Create a new event instance.
      */
     public function __construct(
-        public TeamContract&ExternalId $team
+        public AbstractTeamInvitation $invitation
     ) {}
 }

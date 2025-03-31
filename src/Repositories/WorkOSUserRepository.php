@@ -314,7 +314,6 @@ final class WorkOSUserRepository implements UserRepository
         ExternalId $organization,
         string $email,
         ?int $expiresInDays = null,
-        ?ExternalId $inviter = null,
         ?string $roleSlug = null
     ): ?array {
         try {
@@ -322,7 +321,6 @@ final class WorkOSUserRepository implements UserRepository
                 $email,
                 $organization->getExternalId(),
                 $expiresInDays,
-                $inviter ? $inviter->getExternalId() : null,
                 $roleSlug
             );
 

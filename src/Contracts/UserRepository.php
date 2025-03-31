@@ -76,7 +76,6 @@ interface UserRepository
      *   id: string,
      *   email: string,
      *   organization_id?: string,
-     *   inviter_id?: string,
      *   role_slug?: string,
      *   expires_at?: string
      * }|null
@@ -85,7 +84,6 @@ interface UserRepository
         ExternalId $organization,
         string $email,
         ?int $expiresInDays = null,
-        ?ExternalId $inviter = null,
         ?string $roleSlug = null
     ): ?array;
 

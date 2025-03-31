@@ -19,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
         \RomegaSoftware\WorkOSTeams\Events\TeamUpdated::class => [
             \RomegaSoftware\WorkOSTeams\Listeners\SyncTeamWithWorkOS::class,
         ],
-        \RomegaSoftware\WorkOSTeams\Events\TeamDeleted::class => [
+        \RomegaSoftware\WorkOSTeams\Events\TeamDeleting::class => [
             \RomegaSoftware\WorkOSTeams\Listeners\SyncTeamWithWorkOS::class,
         ],
 
@@ -38,7 +38,7 @@ class EventServiceProvider extends ServiceProvider
         \RomegaSoftware\WorkOSTeams\Events\TeamInvitationCreated::class => [
             \RomegaSoftware\WorkOSTeams\Listeners\SyncTeamInvitationWithWorkOS::class,
         ],
-        \RomegaSoftware\WorkOSTeams\Events\TeamInvitationDeleted::class => [
+        \RomegaSoftware\WorkOSTeams\Events\TeamInvitationDeleting::class => [
             \RomegaSoftware\WorkOSTeams\Listeners\SyncTeamInvitationWithWorkOS::class,
         ],
 

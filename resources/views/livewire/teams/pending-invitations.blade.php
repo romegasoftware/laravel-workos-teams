@@ -27,15 +27,19 @@ new class extends Component {
         $invitation->delete();
 
         Flux::toast(heading: __('Invitation Cancelled'), text: __('The invitation has been cancelled.'), variant: 'success');
+
+        // Dispatch events to refresh the UI
+        $this->dispatch('invitation-cancelled');
     }
 
     #[Computed]
     public function pendingInvitations()
     {
-        return $this->team->invitations()->with('inviter')->latest()->get();
+        return $this->team->invitations()->latest()->get();
     }
 
     #[On('invitation-sent')]
+    #[On('invitation-cancelled')]
     public function refreshInvitations()
     {
         unset($this->pendingInvitations);
@@ -50,7 +54,6 @@ new class extends Component {
             <flux:table.columns>
                 <flux:table.column>{{ __('Email') }}</flux:table.column>
                 <flux:table.column>{{ __('Role') }}</flux:table.column>
-                <flux:table.column>{{ __('Invited By') }}</flux:table.column>
                 <flux:table.column>{{ __('Invited On') }}</flux:table.column>
                 <flux:table.column class="text-right">{{ __('Actions') }}</flux:table.column>
             </flux:table.columns>
@@ -63,9 +66,6 @@ new class extends Component {
                         <flux:badge color="blue">
                             {{ ucfirst($invitation->role) }}
                         </flux:badge>
-                    </flux:table.cell>
-                    <flux:table.cell>
-                        {{ $invitation->inviter->name }}
                     </flux:table.cell>
                     <flux:table.cell>
                         {{ $invitation->created_at->diffForHumans() }}

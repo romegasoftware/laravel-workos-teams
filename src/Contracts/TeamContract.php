@@ -18,11 +18,6 @@ interface TeamContract
     public function getName(): string;
 
     /**
-     * Get the description of the team.
-     */
-    public function getDescription(): ?string;
-
-    /**
      * Update the model in the database without raising any events.
      *
      * @return bool

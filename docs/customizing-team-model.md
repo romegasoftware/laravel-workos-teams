@@ -75,16 +75,6 @@ class Team extends Model implements TeamContract
     }
 
     /**
-     * Get the description of the team.
-     *
-     * @return string|null
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
      * Update the team with the given attributes.
      *
      * @param array<string, mixed> $attributes

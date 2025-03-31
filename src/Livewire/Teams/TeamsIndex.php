@@ -54,8 +54,7 @@ class TeamsIndex extends Component
         $collection = $user->allTeams()
             ->when($this->search, function ($collection) {
                 return $collection->filter(function ($team) {
-                    return str_contains(strtolower($team->name), strtolower($this->search)) ||
-                        str_contains(strtolower($team->description ?? ''), strtolower($this->search));
+                    return str_contains(strtolower($team->name), strtolower($this->search));
                 });
             })
             ->when($this->filter, function ($collection) {

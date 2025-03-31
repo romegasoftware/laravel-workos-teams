@@ -4,7 +4,7 @@ namespace RomegaSoftware\WorkOSTeams\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use RomegaSoftware\WorkOSTeams\Events\TeamInvitationCreated;
-use RomegaSoftware\WorkOSTeams\Events\TeamInvitationDeleted;
+use RomegaSoftware\WorkOSTeams\Events\TeamInvitationDeleting;
 use RomegaSoftware\WorkOSTeams\Models\Team;
 
 trait ImplementsTeamInvitationContract
@@ -19,8 +19,8 @@ trait ImplementsTeamInvitationContract
             event(new TeamInvitationCreated($model));
         });
 
-        static::deleted(function (self $model) {
-            event(new TeamInvitationDeleted($model));
+        static::deleting(function (self $model) {
+            event(new TeamInvitationDeleting($model));
         });
     }
 

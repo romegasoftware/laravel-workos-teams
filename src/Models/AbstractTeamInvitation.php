@@ -4,7 +4,6 @@ namespace RomegaSoftware\WorkOSTeams\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamInvitationContract;
 use RomegaSoftware\WorkOSTeams\Traits\ImplementsTeamInvitationContract;
 
@@ -13,7 +12,6 @@ use RomegaSoftware\WorkOSTeams\Traits\ImplementsTeamInvitationContract;
  * @property string $email
  * @property string $role
  * @property string $workos_invitation_id
- * @property-read User $inviter
  * @property-read Team $team
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\RomegaSoftware\WorkOSTeams\Models\TeamInvitation query()

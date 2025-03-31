@@ -58,7 +58,7 @@ class WebhookController
     }
 
     /**
-     * @param WebhookResource&object{user_data: object{email: string, first_name: string, last_name: string}} $webhookResponse
+     * @param  WebhookResource&object{user_data: object{email: string, first_name: string, last_name: string}}  $webhookResponse
      */
     protected function handleUserCreation(WebhookResource $webhookResponse): User
     {
@@ -67,14 +67,14 @@ class WebhookController
         return $userModel::updateOrCreate(
             ['email' => $webhookResponse->user_data->email],
             [
-                'name' => $webhookResponse->user_data->first_name . ' ' . $webhookResponse->user_data->last_name,
+                'name' => $webhookResponse->user_data->first_name.' '.$webhookResponse->user_data->last_name,
                 'email_verified_at' => now(),
             ]
         );
     }
 
     /**
-     * @param WebhookResource&object{invitation: object{organization_id: string}} $webhookResponse
+     * @param  WebhookResource&object{invitation: object{organization_id: string}}  $webhookResponse
      */
     protected function handleTeamInvitation(WebhookResource $webhookResponse, User $user): void
     {
@@ -94,7 +94,7 @@ class WebhookController
     }
 
     /**
-     * @param WebhookResource&object{invitation: object{organization_id: string}} $webhookResponse
+     * @param  WebhookResource&object{invitation: object{organization_id: string}}  $webhookResponse
      */
     protected function createOrUpdateTeam(string $teamModel, WebhookResource $webhookResponse, $organization): ?Model
     {
@@ -112,7 +112,7 @@ class WebhookController
     }
 
     /**
-     * @param WebhookResource&object{user_data: object{email: string}} $webhookResponse
+     * @param  WebhookResource&object{user_data: object{email: string}}  $webhookResponse
      */
     protected function handleTeamMembership(TeamContract&Model $team, User $user, WebhookResource $webhookResponse, string $teamInvitationModel): void
     {

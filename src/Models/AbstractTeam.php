@@ -23,6 +23,5 @@ abstract class AbstractTeam extends Model implements WorkOSTeams
     protected $fillable = [
         'name',
         'workos_organization_id',
-        'description',
     ];
 }

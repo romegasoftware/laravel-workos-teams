@@ -14,14 +14,11 @@ class TeamEdit extends Component
 
     public string $name = '';
 
-    public string $description = '';
-
     /**
      * @var array<string, string>
      */
     protected array $rules = [
         'name' => 'required|string|max:255',
-        'description' => 'nullable|string|max:1000',
     ];
 
     public function mount($team): void
@@ -33,7 +30,6 @@ class TeamEdit extends Component
         $this->authorize('update', $this->team);
 
         $this->name = $this->team->getName();
-        $this->description = $this->team->getDescription() ?? '';
     }
 
     public function save(): void
@@ -43,7 +39,6 @@ class TeamEdit extends Component
         // Update the team in the database
         $this->team->update([
             'name' => $this->name,
-            'description' => $this->description,
         ]);
 
         Flux::toast(

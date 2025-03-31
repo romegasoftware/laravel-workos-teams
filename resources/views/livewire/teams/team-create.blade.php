@@ -16,13 +16,6 @@
                 wire:model="name"
             />
 
-            <flux:textarea
-                label="{{ __('Description') }}"
-                placeholder="{{ __('Enter team description (optional)') }}"
-                rows="3"
-                wire:model="description"
-            />
-
             <div class="flex justify-end space-x-2 pt-4">
                 <flux:button
                     href="{{ route('teams.index') }}"

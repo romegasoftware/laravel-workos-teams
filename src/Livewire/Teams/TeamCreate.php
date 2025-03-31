@@ -13,11 +13,8 @@ class TeamCreate extends Component
 {
     public string $name = '';
 
-    public string $description = '';
-
     protected $rules = [
         'name' => 'required|string|max:255',
-        'description' => 'nullable|string|max:1000',
     ];
 
     public function save()
@@ -27,10 +24,9 @@ class TeamCreate extends Component
         // Create the team in the database
         $team = config('workos-teams.models.team', Team::class)::create([
             'name' => $this->name,
-            'description' => $this->description,
         ]);
 
-        $team->addMember(Auth::user(), 'owner');
+        $team->fresh()->addMember(Auth::user(), 'owner');
 
         // Show success toast notification
         Flux::toast(

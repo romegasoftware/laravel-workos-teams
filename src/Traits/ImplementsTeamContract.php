@@ -3,12 +3,11 @@
 namespace RomegaSoftware\WorkOSTeams\Traits;
 
 use RomegaSoftware\WorkOSTeams\Events\TeamCreated;
-use RomegaSoftware\WorkOSTeams\Events\TeamDeleted;
+use RomegaSoftware\WorkOSTeams\Events\TeamDeleting;
 use RomegaSoftware\WorkOSTeams\Events\TeamUpdated;
 
 /**
  * @property string $name
- * @property string $description
  */
 trait ImplementsTeamContract
 {
@@ -27,8 +26,8 @@ trait ImplementsTeamContract
             event(new TeamUpdated($model));
         });
 
-        static::deleted(function (self $model) {
-            event(new TeamDeleted($model));
+        static::deleting(function (self $model) {
+            event(new TeamDeleting($model));
         });
     }
 
@@ -38,13 +37,5 @@ trait ImplementsTeamContract
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * Get the description of the team.
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 }
