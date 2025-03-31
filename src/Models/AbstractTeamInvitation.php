@@ -2,8 +2,8 @@
 
 namespace RomegaSoftware\WorkOSTeams\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamInvitationContract;
 use RomegaSoftware\WorkOSTeams\Traits\ImplementsTeamInvitationContract;
@@ -20,9 +20,6 @@ use RomegaSoftware\WorkOSTeams\Traits\ImplementsTeamInvitationContract;
  */
 abstract class AbstractTeamInvitation extends Model implements TeamInvitationContract
 {
-    /** @use HasFactory<\Illuminate\Database\Eloquent\Factories\Factory> */
-    use HasFactory;
-
     use ImplementsTeamInvitationContract;
 
     /**
@@ -35,4 +32,9 @@ abstract class AbstractTeamInvitation extends Model implements TeamInvitationCon
         'email',
         'role',
     ];
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(config('workos-teams.models.team', Team::class));
+    }
 }

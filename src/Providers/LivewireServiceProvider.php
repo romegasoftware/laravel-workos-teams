@@ -2,20 +2,25 @@
 
 namespace RomegaSoftware\WorkOSTeams\Providers;
 
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
+use Livewire\LivewireManager;
 use Symfony\Component\Finder\Finder;
 
 class LivewireServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * Register any application services.
      */
-    public function boot(): void
+    public function register(): void
     {
         if (class_exists(Livewire::class)) {
-            $this->registerLivewireComponents();
+            $this->app->booted(function () {
+                $this->bindLivewireManager();
+                $this->registerLivewireComponents();
+            });
         }
     }
 
@@ -43,5 +48,16 @@ class LivewireServiceProvider extends ServiceProvider
                 Livewire::component($componentName, $componentClass);
             }
         }
+    }
+
+    /**
+     * Bind the custom Livewire manager in the container.
+     */
+    protected function bindLivewireManager(): void
+    {
+        $this->app->singleton(LivewireManager::class);
+        $this->app->alias(LivewireManager::class, 'livewire');
+
+        Facade::clearResolvedInstance('livewire');
     }
 }

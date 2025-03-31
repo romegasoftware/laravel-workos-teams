@@ -13,30 +13,6 @@ WorkOS webhooks allow your application to receive real-time updates about events
 
 ## Configuration Requirements
 
-### Config File Settings
-
-The following configuration settings are required in your `config/workos-teams.php` file:
-
-```php
-return [
-    // Webhook route configuration
-    'routes' => [
-        'prefix' => 'webhooks', // URL prefix for webhook endpoints
-        'middleware' => ['api'], // Middleware applied to webhook routes
-    ],
-
-    // Model class mappings
-    'models' => [
-        'user' => \App\Models\User::class,
-        'team' => \App\Models\Team::class,
-        'team_invitation' => \App\Models\TeamInvitation::class,
-    ],
-
-    // WorkOS webhook secret (should be set in your .env file)
-    'webhook_secret' => env('WORKOS_WEBHOOK_SECRET'),
-];
-```
-
 ### Environment Variables
 
 Ensure the following variables are set in your `.env` file:
@@ -44,6 +20,47 @@ Ensure the following variables are set in your `.env` file:
 ```
 WORKOS_WEBHOOK_SECRET=your_workos_webhook_secret
 ```
+
+## Route Registration
+
+There are two ways to implement WorkOS webhooks in your application:
+
+### 1. Using the Built-in Route Registration
+
+The simplest way to implement webhooks is to use the built-in route registration:
+
+```php
+use RomegaSoftware\WorkOSTeams\WorkOSTeams;
+
+// In your routes/webhooks.php file
+WorkOSTeams::webhooks()->register();
+```
+
+This will register the webhook endpoint with the uri `/user-registration-action`.
+
+### 2. Custom Implementation
+
+Alternatively, you can create your own webhook route and controller:
+
+```php
+Route::post('/webhooks/work-os/user-registration-action', [YourCustomController::class, 'handle']);
+```
+
+This gives you complete control over the webhook handling process while still maintaining compatibility with WorkOS's webhook system.
+
+## Webhook Controller
+
+The default `\RomegaSoftware\WorkOSTeams\Http\Controllers\WebhookController` provides a complete implementation for handling WorkOS webhooks. You can:
+
+1. Use it as-is by registering the routes through `WorkOSTeams::webhooks()->register()`
+2. Extend it to add custom functionality
+3. Override it completely with your own implementation
+
+The controller handles the following responsibilities:
+- Webhook signature verification
+- User creation/updates
+- Team and organization management
+- Response formatting
 
 ## Supported Webhook Events
 
@@ -67,7 +84,7 @@ To configure webhooks in your WorkOS dashboard:
 3. Create a new webhook endpoint
 4. Set the URL to `https://your-domain.com/webhooks/work-os/user-registration-action`
 5. Generate a webhook secret and save it in your `.env` file
-6. Select the events you want to receive (User Registration, etc.)
+6. Select the events you want to receive (User Registration)
 7. Save the webhook configuration
 
 ## Webhook Processing Flow
@@ -91,9 +108,97 @@ graph TD
 
 ## Customizing Webhook Handling
 
-You can customize the webhook handling by modifying the routes in `workos-teams/routes/webhooks.php` or by extending the repository classes used to interact with WorkOS.
+You can customize the webhook handling in several ways:
 
-> 💡 **Tip:** For complex webhook handling logic, consider creating dedicated handler classes rather than putting all the logic in the route definition.
+1. **Extend the Default Controller**
+   ```php
+   class YourWebhookController extends WebhookController
+   {
+       public function handle(Request $request)
+       {
+           // Add custom logic before handling
+           $response = parent::handle($request);
+           // Add custom logic after handling
+           return $response;
+       }
+   }
+   ```
+
+2. **Override Individual Methods**
+   The `WebhookController` provides several protected methods that you can override to customize specific behaviors:
+
+   ```php
+   class YourWebhookController extends WebhookController
+   {
+       protected function getWebhookSecret(): ?string
+       {
+           // Customize how the webhook secret is retrieved
+           return config('your-custom-config.webhook_secret');
+       }
+
+       protected function verifyWebhook(Request $request, string $webhookSecret): ?WebhookResource
+       {
+           // Customize webhook verification logic
+           return parent::verifyWebhook($request, $webhookSecret);
+       }
+
+       protected function handleUserCreation(WebhookResource $webhookResponse): User
+       {
+           // Customize user creation/update behavior
+           $user = parent::handleUserCreation($webhookResponse);
+
+           // Add additional user setup
+           $user->update(['custom_field' => 'value']);
+
+           return $user;
+       }
+
+       protected function handleTeamInvitation(WebhookResource $webhookResponse, User $user): void
+       {
+           // Override the entire team invitation flow
+           parent::handleTeamInvitation($webhookResponse, $user);
+       }
+
+       protected function createOrUpdateTeam(string $teamModel, WebhookResource $webhookResponse, $organization): ?Team
+       {
+           // Customize team creation logic
+           return parent::createOrUpdateTeam($teamModel, $webhookResponse, $organization);
+       }
+
+       protected function updateUserTeam(User $user, Team $team): void
+       {
+           // Customize how the user's current team is updated
+           $user->updateQuietly([
+               'current_team_id' => $team->getKey(),
+               'team_joined_at' => now(),
+           ]);
+       }
+
+       protected function handleTeamMembership(Team $team, User $user, WebhookResource $webhookResponse, string $teamInvitationModel): void
+       {
+           // Customize team membership handling
+           $team->addMember($user, 'admin'); // Always add as admin
+       }
+
+       protected function createWebhookResponse(string $webhookSecret): \Illuminate\Http\JsonResponse
+       {
+           // Customize the webhook response format
+           $response = parent::createWebhookResponse($webhookSecret);
+
+           // Add additional data to the response
+           $response->setData(array_merge($response->getData(), [
+               'custom_field' => 'value',
+           ]));
+
+           return $response;
+       }
+   }
+   ```
+
+3. **Create Your Own Controller**
+   - Implement your own webhook handling logic
+   - Maintain compatibility with WorkOS's webhook system
+   - Handle the webhook signature verification yourself
 
 ## Troubleshooting
 
@@ -101,12 +206,7 @@ You can customize the webhook handling by modifying the routes in `workos-teams/
 
 1. **Webhook Verification Failed**
    - Check that your `WORKOS_WEBHOOK_SECRET` in the `.env` file matches the secret in your WorkOS dashboard
-
-2. **Missing Team Invitation Model**
-   - Ensure that you have defined the `TeamInvitation` model and it's properly referenced in your configuration
-
-3. **Organization Not Found**
-   - Verify that the organization exists in WorkOS and that your repository implementation can correctly retrieve it
+   - If using a custom `getWebhookSecret()` method, verify it returns the correct secret
 
 ### Debugging
 
@@ -115,6 +215,23 @@ To debug webhook issues:
 1. Check your application logs for detailed error messages
 2. Use the WorkOS dashboard to view webhook delivery attempts and responses
 3. Consider using a webhook debugging tool like RequestBin for local development
+4. When overriding methods, add logging to track the flow of execution:
+   ```php
+   protected function handleUserCreation(WebhookResource $webhookResponse): User
+   {
+       \Log::info('Creating/updating user', [
+           'email' => $webhookResponse->user_data->email,
+       ]);
+
+       $user = parent::handleUserCreation($webhookResponse);
+
+       \Log::info('User created/updated', [
+           'user_id' => $user->id,
+       ]);
+
+       return $user;
+   }
+   ```
 
 ## Related Documentation
 

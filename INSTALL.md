@@ -4,7 +4,7 @@ This guide will help you integrate the WorkOS Teams package into your Laravel ap
 
 ## Prerequisites
 
-- Laravel 9.0+ application
+- Laravel 11.0+ application
 - PHP 8.2+
 - WorkOS account and API keys
 - Laravel WorkOS package installed
@@ -171,15 +171,24 @@ And set up routes for the team management components:
 
 ```php
 // routes/web.php
-use App\Livewire\Teams\TeamsIndex;
-use App\Livewire\Teams\TeamCreate;
-use App\Livewire\Teams\TeamShow;
-use App\Livewire\Teams\TeamEdit;
+use \RomegaSoftware\WorkOSTeams\WorkOSTeams;
+use RomegaSoftware\WorkOSTeams\Http\Middleware\EnsureHasTeam;
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/teams', TeamsIndex::class)->name('teams.index');
-    Route::get('/teams/create', TeamCreate::class)->name('teams.create');
-    Route::get('/teams/{team}', TeamShow::class)->name('teams.show');
-    Route::get('/teams/{team}/edit', TeamEdit::class)->name('teams.edit');
+Route::middleware(['web', 'auth', EnsureHasTeam::class])->group(function () {
+    WorkOSTeams::web()
+        ->register();
+});
+```
+
+By default, the `teams.created` route does not require a User have a team to access by removing the middleware `EnsureHasTeam`. This is a sensible default for the instance where a new user is registering with your app and needs to create their first team. You may override this default if you need.
+
+```php
+use \RomegaSoftware\WorkOSTeams\WorkOSTeams;
+use RomegaSoftware\WorkOSTeams\Http\Middleware\EnsureHasTeam;
+
+Route::middleware(['web', 'auth', EnsureHasTeam::class])->group(function () {
+    WorkOSTeams::web()
+        ->withoutDefaultMiddleware()
+        ->register();
 });
 ```

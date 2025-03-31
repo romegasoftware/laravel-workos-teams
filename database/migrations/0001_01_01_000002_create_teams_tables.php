@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('team_user', function (Blueprint $table) {
+        Schema::create('team_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id');
             $table->foreignId('user_id');
@@ -30,7 +30,7 @@ return new class extends Migration
 
         Schema::create('team_invitations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('team_id');
             $table->string('email');
             $table->string('role')->nullable();
             $table->string('workos_invitation_id')->nullable()->unique();
@@ -50,7 +50,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('team_invitations');
-        Schema::dropIfExists('team_user');
+        Schema::dropIfExists('team_users');
         Schema::dropIfExists('teams');
 
         Schema::table('users', function (Blueprint $table) {

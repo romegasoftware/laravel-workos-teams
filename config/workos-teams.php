@@ -9,11 +9,12 @@ return [
     | These model class names are used to determine which model classes should
     | be used when interacting with WorkOS Teams.
     |
-    | Note: The team model class must implement the
-    | RomegaSoftware\WorkOSTeams\Contracts\TeamContract interface.
+    | Note: The `team` model class must implement the
+    | `RomegaSoftware\WorkOSTeams\Contracts\TeamContract` interface.
+    |
     | For full functionality, we recommend implementing the
-    | RomegaSoftware\WorkOSTeams\Contracts\WorkOSTeams interface and using the
-    | RomegaSoftware\WorkOSTeams\Traits\ImplementsWorkOSTeams trait.
+    | `RomegaSoftware\WorkOSTeams\Contracts\WorkOSTeams` interface and using the
+    | `RomegaSoftware\WorkOSTeams\Traits\ImplementsWorkOSTeams` trait.
     |
     */
     'models' => [
@@ -23,32 +24,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Routes Prefix & Middleware
-    |--------------------------------------------------------------------------
-    |
-    | Configure the prefix and middleware for the WorkOS Teams webhook routes.
-    |
-    */
-    'routes' => [
-        'web' => [
-            'prefix' => '',
-            'middleware' => ['web'], // e.g. ['web']
-        ],
-        'webhooks' => [
-            'prefix' => 'webhooks',
-            'middleware' => ['api'], // e.g. ['api']
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | WorkOS Teams Webhook Secret
     |--------------------------------------------------------------------------
     |
-    | The secret used to verify the WorkOS webhook.
+    | The secret used to verify the WorkOS webhook. Find this in the WorkOS
+    | dashboard under the "Webhooks" section. You must also register the webhook
+    | route in your application.
     |
     */
-    'webhook_secret' => env('WORKOS_TEAMS_WEBHOOK_SECRET'),
+    'webhook_secret' => env('WORKOS_TEAMS_WEBHOOK_SECRET', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -59,8 +43,7 @@ return [
     |
     */
     'features' => [
-        'webhooks' => true,
-        'team_switching' => true,
-        'automatic_organization_sync' => true,
+        'team_switching' => env('WORKOS_TEAMS_TEAM_SWITCHING_ENABLED', true),
+        'automatic_organization_sync' => env('WORKOS_TEAMS_AUTOMATIC_ORGANIZATION_SYNC_ENABLED', true),
     ],
 ];

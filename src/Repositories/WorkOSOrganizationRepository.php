@@ -2,7 +2,6 @@
 
 namespace RomegaSoftware\WorkOSTeams\Repositories;
 
-use Illuminate\Config\Repository;
 use Laravel\WorkOS\WorkOS as LaravelWorkOS;
 use Ramsey\Uuid\Uuid;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;

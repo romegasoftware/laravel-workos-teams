@@ -2,16 +2,12 @@
 
 namespace RomegaSoftware\WorkOSTeams\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use RomegaSoftware\WorkOSTeams\Contracts\WorkOSTeams;
 use RomegaSoftware\WorkOSTeams\Traits\ImplementsWorkOSTeams;
 
 abstract class AbstractTeam extends Model implements WorkOSTeams
 {
-    /** @use HasFactory<\Illuminate\Database\Eloquent\Factories\Factory> */
-    use HasFactory;
-
     use ImplementsWorkOSTeams;
 
     /**

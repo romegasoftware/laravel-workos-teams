@@ -2,7 +2,19 @@
 
 namespace RomegaSoftware\WorkOSTeams\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use RomegaSoftware\WorkOSTeams\Database\Factories\TeamFactory;
+
 final class Team extends AbstractTeam
 {
-    // Concrete implementation with no additional logic
+    /** @use HasFactory<\Illuminate\Database\Eloquent\Factories\Factory> */
+    use HasFactory;
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return TeamFactory::new();
+    }
 }

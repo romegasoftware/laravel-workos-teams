@@ -42,7 +42,7 @@ new class extends Component {
         // Ensure the user can update team members
         $this->authorize('updateTeamMember', $this->team);
 
-        $member = User::find($this->selectedMemberId);
+        $member = config('auth.providers.users.model')::find($this->selectedMemberId);
 
         // Use the Team model's addMember method to trigger the observer
         // This will handle the WorkOS synchronization
@@ -59,7 +59,7 @@ new class extends Component {
         $this->authorize('removeTeamMember', $this->team);
 
         // Get the member before removing them
-        $member = User::find($userId);
+        $member = config('auth.providers.users.model')::find($userId);
 
         // Use the Team model's removeMember method to trigger the observer
         // This will handle the WorkOS synchronization

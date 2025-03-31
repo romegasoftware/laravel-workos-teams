@@ -12,6 +12,8 @@ use RomegaSoftware\WorkOSTeams\Traits\HasWorkOSExternalId;
 
 // Put this inside an `if (false) {}` or similar condition to ensure it never
 // actually loads in production. The IDE and static analyzers will still see it.
+// The intent is to provide a stub for the User model that can be used to
+// suppress IDE errors.
 if (! class_exists(User::class)) {
 
     class User extends Authenticatable implements ExternalId
@@ -28,6 +30,7 @@ if (! class_exists(User::class)) {
             'name',
             'email',
             'avatar',
+            'custom_field',
         ];
 
         /**
