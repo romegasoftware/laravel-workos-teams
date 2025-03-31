@@ -30,6 +30,7 @@ php artisan vendor:publish --tag="workos-teams-config"
 
 ## Step 4: Configure Your Models
 
+### User Model
 Update your User model to use the HasTeams and HasWorkOSExternalId traits:
 
 ```php
@@ -49,89 +50,96 @@ class User extends Authenticatable
 }
 ```
 
-Create a Team model that implements the ExternalId interface:
+### Team Model
+
+You may utilize the Team model already part of this package. Alternatively, you can extend the `AbstractTeam` class which already implements the necessary interfaces and traits:
 
 ```php
 <?php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
-use RomegaSoftware\WorkOSTeams\Traits\HasExternalId;
+use RomegaSoftware\WorkOSTeams\Models\AbstractTeam;
 
-class Team extends Model implements ExternalId
+class Team extends AbstractTeam
 {
-    use HasExternalId;
-
-    public const EXTERNAL_ID_COLUMN = 'workos_organization_id';
-
-    protected $fillable = [
-        'name',
-        'workos_organization_id',
-        'description',
-    ];
-
-    // ...
+    // Add any additional functionality here
 }
 ```
 
-Create a TeamInvitation model:
+For full functionality, we recommend either:
+1. Extending `AbstractTeam` (easiest)
+2. Implementing the `WorkOSTeams` interface and using the `ImplementsWorkOSTeams` trait
+3. Implementing the `TeamContract` interface and using the `ImplementsTeamContract` trait
+
+The `AbstractTeam` class provides all necessary functionality including:
+- Team contract methods (name, description, etc.)
+- External ID management for WorkOS integration
+- Team relationship methods
+- Event handling for team operations
+
+### Team Invitation Model
+
+You may utilize the TeamInvitation model already part of this package. Alternatively, you can extend the `AbstractTeamInvitation` class which already implements the necessary interfaces and traits:
 
 ```php
 <?php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
-use RomegaSoftware\WorkOSTeams\Traits\HasExternalId;
+use RomegaSoftware\WorkOSTeams\Models\AbstractTeamInvitation;
 
-class TeamInvitation extends Model implements ExternalId
+class TeamInvitation extends AbstractTeamInvitation
 {
-    use HasExternalId;
-
-    public const EXTERNAL_ID_COLUMN = 'workos_invitation_id';
-
-    protected $fillable = [
-        'team_id',
-        'email',
-        'role',
-        'workos_invitation_id',
-    ];
-
-    // ...
+    // Add any additional functionality here
 }
 ```
+
+The `AbstractTeamInvitation` class provides all necessary functionality including:
+- Team invitation contract methods
+- External ID management for WorkOS integration
+- Team relationship methods
+- Event handling for invitation operations
 
 ## Step 5: Update Your Authentication Flow
 
-Replace the standard WorkOS authentication with team support:
+Replace the standard Laravel WorkOS authenticate route Request typehint with this package's Request type hint containing team support:
 
 ```php
-<?php
-
-namespace App\Http\Controllers\Auth;
-
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+// routes/auth.php
 use RomegaSoftware\WorkOSTeams\Http\Requests\AuthKitTeamAuthenticationRequest;
+// ...
 
-class WorkOSController extends Controller
-{
-    public function callback(AuthKitTeamAuthenticationRequest $request)
-    {
-        $user = $request->authenticate();
+Route::get('authenticate', function (AuthKitTeamAuthenticationRequest $request) {
+    return tap(to_route('dashboard'), fn() => $request->authenticate());
+})->middleware(['guest']);
 
-        Auth::login($user);
-
-        return redirect('/dashboard');
-    }
-}
+// ...
 ```
 
 ## Step 6: Configure WorkOS Webhooks
+
+Add the webhoook route group.
+
+```php
+// bootstrap/app.php
+// ...
+    ->withRouting(
+        // ...
+        then: function () {
+            Route::middleware('api')
+                ->prefix('webhooks')
+                ->group(__DIR__ . '/../routes/webhooks.php');
+        },
+    )
+```
+
+```php
+// routes/webhooks.php
+use RomegaSoftware\WorkOSTeams\WorkOSTeams;
+
+WorkOSTeams::webhooks()->register();
+```
 
 In your WorkOS dashboard, set up a webhook endpoint for user registration actions:
 
@@ -145,7 +153,59 @@ Make sure to set the webhook secret in your `.env` file:
 WORKOS_WEBHOOK_SECRET=your_webhook_secret
 ```
 
-## Step 7: Test the Integration
+## Step 7: Protect Your Routes
+
+You'll want to protect any routes that must have team relationships using the `EnsureHasTeam` middleware.
+
+```php
+// routes/web.php
+use RomegaSoftware\WorkOSTeams\Http\Middleware\EnsureHasTeam;
+
+Route::middleware(['auth', 'workos.session', EnsureHasTeam::class])->group(function () {
+    Route::get('/protected-route', function () {
+        $currentTeam = auth()->user()->currentTeam;
+        // ..
+    });
+});
+```
+
+## Optional: Livewire Components
+
+If you're using Livewire, you can publish the views and register the routes:
+
+### Publish Views
+```bash
+php artisan vendor:publish --tag="workos-teams-views"
+```
+
+### Register Routes
+
+```php
+// routes/web.php
+use RomegaSoftware\WorkOSTeams\Http\Middleware\EnsureHasTeam;
+use RomegaSoftware\WorkOSTeams\WorkOSTeams;
+
+Route::middleware(['auth', 'workos.session', EnsureHasTeam::class])->group(function () {
+    WorkOSTeams::web()->register();
+});
+```
+
+By default, the `teams.create` route does not require a User have a team to access by removing the middleware `EnsureHasTeam`. This is a sensible default for the instance where a new user is registering with your app and needs to create their first team. You may override this default if you need.
+
+```php
+use RomegaSoftware\WorkOSTeams\WorkOSTeams;
+use RomegaSoftware\WorkOSTeams\Http\Middleware\EnsureHasTeam;
+
+Route::middleware(['web', 'auth', EnsureHasTeam::class, SomeOtherMiddleware::class])->group(function () {
+    WorkOSTeams::web()
+        ->withoutDefaultMiddleware()
+        // Optionally define another middleware to remove
+        ->withoutMiddlewareFor('teams.create', [SomeOtherMiddleware::class])
+        ->register();
+});
+```
+
+## \[Work in Progress\] Console Commands
 
 You can test the synchronization between your teams and WorkOS organizations using the provided command:
 
@@ -157,38 +217,4 @@ To sync a specific team:
 
 ```bash
 php artisan workos:sync-organizations --team-id=1
-```
-
-## Optional: Livewire Components
-
-If you're using Livewire, you can publish the views:
-
-```bash
-php artisan vendor:publish --tag="workos-teams-views"
-```
-
-And set up routes for the team management components:
-
-```php
-// routes/web.php
-use \RomegaSoftware\WorkOSTeams\WorkOSTeams;
-use RomegaSoftware\WorkOSTeams\Http\Middleware\EnsureHasTeam;
-
-Route::middleware(['web', 'auth', EnsureHasTeam::class])->group(function () {
-    WorkOSTeams::web()
-        ->register();
-});
-```
-
-By default, the `teams.created` route does not require a User have a team to access by removing the middleware `EnsureHasTeam`. This is a sensible default for the instance where a new user is registering with your app and needs to create their first team. You may override this default if you need.
-
-```php
-use \RomegaSoftware\WorkOSTeams\WorkOSTeams;
-use RomegaSoftware\WorkOSTeams\Http\Middleware\EnsureHasTeam;
-
-Route::middleware(['web', 'auth', EnsureHasTeam::class])->group(function () {
-    WorkOSTeams::web()
-        ->withoutDefaultMiddleware()
-        ->register();
-});
 ```

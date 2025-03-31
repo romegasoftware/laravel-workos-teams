@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('team_users', function (Blueprint $table) {
+        Schema::create('team_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id');
             $table->foreignId('user_id');
@@ -50,7 +50,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('team_invitations');
-        Schema::dropIfExists('team_users');
+        Schema::dropIfExists('team_user');
         Schema::dropIfExists('teams');
 
         Schema::table('users', function (Blueprint $table) {

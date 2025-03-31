@@ -42,6 +42,7 @@ class WorkOSTeamsTest extends TestCase
         $this->assertIsString(config('workos-teams.models.team_invitation'));
 
         // Webhook secret
+        $this->app['config']->set('workos-teams.webhook_secret', 'test');
         $this->assertIsString(config('workos-teams.webhook_secret'));
 
         // Features

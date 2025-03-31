@@ -177,7 +177,7 @@ class WebhookControllerTest extends TestCase
         $this->assertDatabaseMissing('team_invitations', [
             'id' => $invitation->id,
         ]);
-        $this->assertDatabaseHas('team_users', [
+        $this->assertDatabaseHas('team_user', [
             'team_id' => $team->id,
             'user_id' => User::where('email', $email)->first()->id,
             'role' => 'admin',
@@ -286,7 +286,7 @@ class WebhookControllerTest extends TestCase
         $response = $controller->handle($this->createWebhookRequest());
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertDatabaseHas('team_users', [
+        $this->assertDatabaseHas('team_user', [
             'team_id' => $team->id,
             'user_id' => User::where('email', $email)->first()->id,
             'role' => 'admin',

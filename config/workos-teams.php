@@ -32,7 +32,7 @@ return [
     | route in your application.
     |
     */
-    'webhook_secret' => env('WORKOS_TEAMS_WEBHOOK_SECRET', null),
+    'webhook_secret' => env('WORKOS_WEBHOOK_SECRET', null),
 
     /*
     |--------------------------------------------------------------------------

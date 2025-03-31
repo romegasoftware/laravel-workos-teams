@@ -81,7 +81,7 @@ class RouteRegistrar
         $this->addRoute(
             method: 'post',
             name: 'webhooks.user-registration-action',
-            uri: '/user-registration-action',
+            uri: '/work-os/user-registration-action',
             componentOrController: [WebhookController::class, 'handle']
         );
     }

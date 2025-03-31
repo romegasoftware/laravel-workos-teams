@@ -54,12 +54,12 @@ final class SyncWorkOSOrganizations extends Command
                 function (Builder $query) {
                     $query->whereNotNull($this->externalIdColumn);
                 }
-            )
-            // TODO: Dispatch a job for each of these.
-            ->each($this->syncTeamToWorkOS(...))
-            ->each($this->syncWorkOsToTeam(...))
-            ->each($this->syncTeamMembersToWorkOS(...))
-            ->each($this->syncWorkOsToTeamMembers(...));
+            );
+        // TODO: Dispatch a job for each of these.
+        // ->each($this->syncTeamToWorkOS(...))
+        // ->each($this->syncWorkOsToTeam(...))
+        // ->each($this->syncTeamMembersToWorkOS(...))
+        // ->each($this->syncWorkOsToTeamMembers(...));
 
         return 0;
     }
