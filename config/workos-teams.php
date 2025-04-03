@@ -13,8 +13,8 @@ return [
     | `RomegaSoftware\WorkOSTeams\Contracts\TeamContract` interface.
     |
     | For full functionality, we recommend implementing the
-    | `RomegaSoftware\WorkOSTeams\Contracts\WorkOSTeams` interface and using the
-    | `RomegaSoftware\WorkOSTeams\Traits\ImplementsWorkOSTeams` trait.
+    | `RomegaSoftware\WorkOSTeams\Contracts\WorkOSTeamsContract` interface and using the
+    | `RomegaSoftware\WorkOSTeams\Traits\ImplementsWorkOSTeamsContract` trait.
     |
     */
     'models' => [

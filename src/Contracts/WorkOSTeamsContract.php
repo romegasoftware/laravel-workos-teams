@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Contracts;
 
-interface WorkOSTeams extends ExternalId, TeamContract
+interface WorkOSTeamsContract extends ExternalId, TeamContract
 {
     //
 }

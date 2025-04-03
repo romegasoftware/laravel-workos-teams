@@ -41,3 +41,10 @@ A few known differences with Jetstream:
 - Profile Management: Profile Management is handled with the Laravel WorkOS starter kit.
 
 If you notice any other differences that should be included, feel free to open an issue or a pull request.
+
+
+TODO:
+
+- [ ] Update documentation with screenshots
+- [ ] Implement the console sync
+- [ ]

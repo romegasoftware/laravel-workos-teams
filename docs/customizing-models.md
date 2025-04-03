@@ -22,7 +22,7 @@ class Team extends AbstractTeam
 
 For full functionality, we recommend either:
 1. Extending `AbstractTeam` (easiest)
-2. Implementing the `WorkOSTeams` interface and using the `ImplementsWorkOSTeams` trait
+2. Implementing the `WorkOSTeamsContract` interface and using the `ImplementsWorkOSTeamsContract` trait
 3. Implementing the `TeamContract` interface and using the `ImplementsTeamContract` trait
 
 The `AbstractTeam` class provides all necessary functionality including:
