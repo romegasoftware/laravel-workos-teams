@@ -2,25 +2,26 @@
 
 namespace RomegaSoftware\WorkOSTeams\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User;
+use WorkOS\Webhook;
 use Illuminate\Http\Request;
-use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
+use Illuminate\Foundation\Auth\User;
+use WorkOS\Resource\WebhookResponse;
+use Illuminate\Database\Eloquent\Model;
+use RomegaSoftware\WorkOSTeams\Models\Team;
+use WorkOS\Resource\Webhook as WebhookResource;
+use RomegaSoftware\WorkOSTeams\Domain\Organization;
+use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\FindOrganizationDTO;
-use RomegaSoftware\WorkOSTeams\Models\Team;
-use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
-use WorkOS\Resource\Webhook as WebhookResource;
-use WorkOS\Resource\WebhookResponse;
-use WorkOS\Webhook;
+use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 
 class WebhookController
 {
-    public function handle(Request $request)
+    public function handle(Request $request): \Illuminate\Http\JsonResponse
     {
         $webhookSecret = $this->getWebhookSecret();
 
-        if (! $webhookSecret) {
+        if ($webhookSecret === null) {
             return response()->json(['message' => 'Webhook secret is not configured'], 400);
         }
 
@@ -67,7 +68,7 @@ class WebhookController
         return $userModel::updateOrCreate(
             ['email' => $webhookResponse->user_data->email],
             [
-                'name' => $webhookResponse->user_data->first_name.' '.$webhookResponse->user_data->last_name,
+                'name' => $webhookResponse->user_data->first_name . ' ' . $webhookResponse->user_data->last_name,
                 'email_verified_at' => now(),
             ]
         );
@@ -96,7 +97,7 @@ class WebhookController
     /**
      * @param  WebhookResource&object{invitation: object{organization_id: string}}  $webhookResponse
      */
-    protected function createOrUpdateTeam(string $teamModel, WebhookResource $webhookResponse, $organization): ?Model
+    protected function createOrUpdateTeam(string $teamModel, WebhookResource $webhookResponse, Organization $organization): ?Model
     {
         return $teamModel::firstOrCreate(
             [(new $teamModel)->getExternalIdColumn() => $webhookResponse->invitation->organization_id],
@@ -106,7 +107,7 @@ class WebhookController
         );
     }
 
-    protected function updateUserTeam(User $user, TeamContract&Model $team): void
+    protected function updateUserTeam(User $user, Model $team): void
     {
         $user->updateQuietly(['current_team_id' => $team->getKey()]);
     }
@@ -114,7 +115,7 @@ class WebhookController
     /**
      * @param  WebhookResource&object{user_data: object{email: string}}  $webhookResponse
      */
-    protected function handleTeamMembership(TeamContract&Model $team, User $user, WebhookResource $webhookResponse, string $teamInvitationModel): void
+    protected function handleTeamMembership(Model $team, User $user, WebhookResource $webhookResponse, string $teamInvitationModel): void
     {
         if (! $team->getKey()) {
             return;

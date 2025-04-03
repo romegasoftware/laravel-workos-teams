@@ -22,5 +22,7 @@
         <PossiblyUnusedProperty errorLevel="suppress" />
         <PossiblyUnusedMethod errorLevel="suppress" />
         <PossiblyUnusedReturnValue errorLevel="suppress" />
+        <ClassMustBeFinal errorLevel="suppress" />
+        <InvalidStringClass errorLevel="suppress" />
     </issueHandlers>
 </psalm>

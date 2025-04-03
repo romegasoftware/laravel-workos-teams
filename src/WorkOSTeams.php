@@ -2,6 +2,9 @@
 
 namespace RomegaSoftware\WorkOSTeams;
 
+/**
+ * @psalm-api
+ */
 class WorkOSTeams
 {
     public static function web(): RouteRegistrar

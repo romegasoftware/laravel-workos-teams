@@ -2,6 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Providers;
 
+use Override;
 use Illuminate\Support\ServiceProvider;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 
@@ -10,6 +11,7 @@ class RepositoryServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         // Register repositories

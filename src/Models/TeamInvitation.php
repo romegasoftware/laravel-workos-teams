@@ -13,7 +13,7 @@ class TeamInvitation extends AbstractTeamInvitation
     /**
      * Create a new factory instance for the model.
      */
-    protected static function newFactory()
+    protected static function newFactory(): TeamInvitationFactory
     {
         return TeamInvitationFactory::new();
     }

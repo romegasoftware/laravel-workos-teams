@@ -13,8 +13,10 @@ class WorkOSCacheService
 
     /**
      * Set a cached value
+     *
+     * @param \RomegaSoftware\WorkOSTeams\Domain\Organization|\RomegaSoftware\WorkOSTeams\Domain\User $value
      */
-    public function set(string $key, mixed $value): void
+    public function set(string $key, \RomegaSoftware\WorkOSTeams\Domain\User|\RomegaSoftware\WorkOSTeams\Domain\Organization $value): void
     {
         Cache::put($key, $value, self::CACHE_TTL);
     }

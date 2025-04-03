@@ -5,12 +5,15 @@ namespace RomegaSoftware\WorkOSTeams\Policies;
 use App\Models\User;
 use RomegaSoftware\WorkOSTeams\Models\Team;
 
+/**
+ * @psalm-api
+ */
 class TeamPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
         return false;
     }
@@ -26,7 +29,7 @@ class TeamPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(): bool
     {
         return true;
     }

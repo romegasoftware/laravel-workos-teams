@@ -2,6 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Models;
 
+use Override;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use RomegaSoftware\WorkOSTeams\Contracts\TeamInvitationContract;
@@ -31,6 +32,10 @@ abstract class AbstractTeamInvitation extends Model implements TeamInvitationCon
         'role',
     ];
 
+    /**
+     * Get the team that the invitation belongs to.
+     */
+    #[Override]
     public function team(): BelongsTo
     {
         return $this->belongsTo(config('workos-teams.models.team', Team::class));

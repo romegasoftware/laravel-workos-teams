@@ -13,7 +13,7 @@ class Team extends AbstractTeam
     /**
      * Create a new factory instance for the model.
      */
-    protected static function newFactory()
+    protected static function newFactory(): TeamFactory
     {
         return TeamFactory::new();
     }
