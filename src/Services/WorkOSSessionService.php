@@ -4,7 +4,7 @@ namespace RomegaSoftware\WorkOSTeams\Services;
 
 use Illuminate\Support\Facades\Session;
 
-final class WorkOSSessionService
+class WorkOSSessionService
 {
     protected const ACCESS_TOKEN_KEY = 'workos_access_token';
 

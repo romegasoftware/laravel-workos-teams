@@ -8,7 +8,7 @@ use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 use RomegaSoftware\WorkOSTeams\Events\TeamDeleting;
 use RomegaSoftware\WorkOSTeams\Models\Team;
 
-final class UnsetCurrentTeamIdWhenTeamIsDeleted implements ShouldQueue
+class UnsetCurrentTeamIdWhenTeamIsDeleted implements ShouldQueue
 {
     /**
      * Handle the team deletion event.

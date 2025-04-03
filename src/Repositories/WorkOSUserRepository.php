@@ -22,7 +22,7 @@ use WorkOS\UserManagement;
 /**
  * @api
  */
-final class WorkOSUserRepository implements UserRepository
+class WorkOSUserRepository implements UserRepository
 {
     /**
      * The WorkOS UserManagement instance.

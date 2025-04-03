@@ -10,7 +10,7 @@ use RomegaSoftware\WorkOSTeams\Events\TeamInvitationDeleting;
 /**
  * @psalm-suppress UnusedClass This class is used as an event listener for TeamInvitationCreated or TeamInvitationDeleting through Laravel's event system
  */
-final class SyncTeamInvitationWithWorkOS implements ShouldQueue
+class SyncTeamInvitationWithWorkOS implements ShouldQueue
 {
     /**
      * Create the event listener.

@@ -5,7 +5,7 @@ namespace RomegaSoftware\WorkOSTeams\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use RomegaSoftware\WorkOSTeams\Database\Factories\TeamInvitationFactory;
 
-final class TeamInvitation extends AbstractTeamInvitation
+class TeamInvitation extends AbstractTeamInvitation
 {
     /** @use HasFactory<\Illuminate\Database\Eloquent\Factories\Factory> */
     use HasFactory;

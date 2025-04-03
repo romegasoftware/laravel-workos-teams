@@ -4,7 +4,7 @@ namespace RomegaSoftware\WorkOSTeams\Events;
 
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 
-final class WorkOSUserDeleted
+class WorkOSUserDeleted
 {
     public function __construct(
         public ExternalId $user,

@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain;
 
-final class User
+class User
 {
     public function __construct(
         public readonly string $id,

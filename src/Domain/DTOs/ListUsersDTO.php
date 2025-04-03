@@ -4,7 +4,7 @@ namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
 use WorkOS\Resource\Order;
 
-final class ListUsersDTO
+class ListUsersDTO
 {
     /**
      * @psalm-suppress PossiblyUnusedMethod

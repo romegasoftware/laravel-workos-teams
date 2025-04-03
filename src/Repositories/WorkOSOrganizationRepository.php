@@ -21,7 +21,7 @@ use WorkOS\UserManagement;
 /**
  * @api
  */
-final class WorkOSOrganizationRepository implements OrganizationRepository
+class WorkOSOrganizationRepository implements OrganizationRepository
 {
     /**
      * The WorkOS Organizations instance.

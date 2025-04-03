@@ -9,7 +9,7 @@ use RomegaSoftware\WorkOSTeams\Events\UserDeleted;
 /**
  * @psalm-suppress UnusedClass This class is used as an event listener for UserDeleted through Laravel's event system
  */
-final class DeleteUserFromWorkOS implements ShouldQueue
+class DeleteUserFromWorkOS implements ShouldQueue
 {
     /**
      * Create the event listener.

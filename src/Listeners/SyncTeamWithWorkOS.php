@@ -13,7 +13,7 @@ use RomegaSoftware\WorkOSTeams\Events\TeamUpdated;
 /**
  * @psalm-suppress UnusedClass This class is used as an event listener for TeamCreated, TeamUpdated, or TeamDeleting through Laravel's event system
  */
-final class SyncTeamWithWorkOS implements ShouldQueue
+class SyncTeamWithWorkOS implements ShouldQueue
 {
     /**
      * Create the event listener.

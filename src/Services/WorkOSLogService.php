@@ -4,7 +4,7 @@ namespace RomegaSoftware\WorkOSTeams\Services;
 
 use Illuminate\Support\Facades\Log;
 
-final class WorkOSLogService
+class WorkOSLogService
 {
     /**
      * Log an error

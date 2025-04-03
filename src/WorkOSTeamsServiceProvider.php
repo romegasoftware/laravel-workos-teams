@@ -14,7 +14,7 @@ use RomegaSoftware\WorkOSTeams\Providers\WorkOSServiceProvider;
 /**
  * @api
  */
-final class WorkOSTeamsServiceProvider extends ServiceProvider
+class WorkOSTeamsServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.

@@ -4,7 +4,7 @@ namespace RomegaSoftware\WorkOSTeams\Services;
 
 use Illuminate\Support\Facades\Cache;
 
-final class WorkOSCacheService
+class WorkOSCacheService
 {
     /**
      * Cache TTL in seconds (5 minutes)

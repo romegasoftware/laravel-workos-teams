@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
-final class FindOrganizationDTO
+class FindOrganizationDTO
 {
     /**
      * Create a new FindOrganizationDTO instance.

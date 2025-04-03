@@ -12,7 +12,7 @@ use RomegaSoftware\WorkOSTeams\Domain\DTOs\CreateOrganizationDTO;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\UpdateOrganizationDTO;
 use RomegaSoftware\WorkOSTeams\Models\Team;
 
-final class SyncWorkOSOrganizations extends Command
+class SyncWorkOSOrganizations extends Command
 {
     /**
      * The name and signature of the console command.

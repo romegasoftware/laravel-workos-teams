@@ -11,7 +11,7 @@ use RuntimeException;
 /**
  * @psalm-suppress UnusedClass This class is used as an event listener for UserUpdated through Laravel's event system
  */
-final class SyncUserWithWorkOS
+class SyncUserWithWorkOS
 {
     public function __construct(
         protected UserRepository $userRepository,

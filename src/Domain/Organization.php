@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain;
 
-final class Organization
+class Organization
 {
     public function __construct(
         public readonly string $id,

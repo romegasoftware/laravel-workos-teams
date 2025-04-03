@@ -8,7 +8,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use RomegaSoftware\WorkOSTeams\Contracts\ExternalId;
 
-final class UserDeleted
+class UserDeleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

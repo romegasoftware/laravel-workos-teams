@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
-final class UpdateOrganizationDTO
+class UpdateOrganizationDTO
 {
     public function __construct(
         public readonly ?string $name = null,
@@ -23,6 +23,6 @@ final class UpdateOrganizationDTO
             'allow_profiles_outside_organization' => $this->allowProfilesOutsideOrganization,
             'domain_data' => $this->domainData,
             'metadata' => $this->metadata,
-        ], fn ($value) => $value !== null);
+        ], fn($value) => $value !== null);
     }
 }

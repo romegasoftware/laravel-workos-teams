@@ -10,7 +10,7 @@ use RomegaSoftware\WorkOSTeams\Events\TeamCreated;
 /**
  * @psalm-suppress UnusedClass This class is used as an event listener for TeamCreated through Laravel's event system
  */
-final class SyncWorkOSOrganizationMembers implements ShouldQueue
+class SyncWorkOSOrganizationMembers implements ShouldQueue
 {
     /**
      * Create the event listener.

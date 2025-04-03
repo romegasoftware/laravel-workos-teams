@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
-final class CreateOrganizationDTO
+class CreateOrganizationDTO
 {
     public function __construct(
         public readonly string $name,

@@ -11,7 +11,7 @@ use RomegaSoftware\WorkOSTeams\Events\TeamMemberUpdated;
 /**
  * @psalm-suppress UnusedClass This class is used as an event listener for TeamMemberAdded, TeamMemberRemoved, or TeamMemberUpdated through Laravel's event system
  */
-final class SyncTeamMemberWithWorkOS implements ShouldQueue
+class SyncTeamMemberWithWorkOS implements ShouldQueue
 {
     /**
      * Create the event listener.

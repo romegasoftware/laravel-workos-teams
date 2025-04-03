@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
-final class CreateUserDTO
+class CreateUserDTO
 {
     /**
      * Create a new CreateUserDTO instance.

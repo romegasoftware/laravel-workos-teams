@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
-final class UpdateUserDTO
+class UpdateUserDTO
 {
     /**
      * Create a new UpdateUserDTO instance.

@@ -2,7 +2,7 @@
 
 namespace RomegaSoftware\WorkOSTeams\Domain\DTOs;
 
-final class FindUserDTO
+class FindUserDTO
 {
     /**
      * @psalm-suppress PossiblyUnusedMethod
