@@ -11,7 +11,6 @@ use RomegaSoftware\WorkOSTeams\Models\Team;
 use WorkOS\Resource\Webhook as WebhookResource;
 use RomegaSoftware\WorkOSTeams\Domain\Organization;
 use RomegaSoftware\WorkOSTeams\Models\TeamInvitation;
-use RomegaSoftware\WorkOSTeams\Contracts\TeamContract;
 use RomegaSoftware\WorkOSTeams\Domain\DTOs\FindOrganizationDTO;
 use RomegaSoftware\WorkOSTeams\Contracts\OrganizationRepository;
 

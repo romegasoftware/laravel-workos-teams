@@ -12,16 +12,25 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Register views
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'workos-teams');
+        // Check if Livewire is enabled
+        if (config('workos-teams.features.livewire', false)) {
+            // Register Livewire views
+            $this->loadViewsFrom(__DIR__.'/../../resources/views', 'workos-teams');
 
-        // Register Blade components
-        $this->bootComponentPath();
+            // Register Blade components
+            $this->bootComponentPath();
 
-        // Optionally publish views
-        $this->publishes([
-            __DIR__.'/../../resources/views' => resource_path('views/vendor/workos-teams'),
-        ], 'workos-teams-views');
+            // Optionally publish views
+            $this->publishes([
+                __DIR__.'/../../resources/views' => resource_path('views/vendor/workos-teams'),
+            ], 'workos-teams-views');
+        } else {
+            // Only register non-Livewire views if any exist
+            $nonLivewireViewsPath = __DIR__.'/../../resources/views/non-livewire';
+            if (is_dir($nonLivewireViewsPath)) {
+                $this->loadViewsFrom($nonLivewireViewsPath, 'workos-teams');
+            }
+        }
     }
 
     protected function bootComponentPath(): void

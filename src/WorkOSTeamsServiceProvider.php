@@ -26,7 +26,12 @@ class WorkOSTeamsServiceProvider extends ServiceProvider
         $this->app->register(WorkOSServiceProvider::class);
         $this->app->register(RepositoryServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
-        $this->app->register(LivewireServiceProvider::class);
+        
+        // Only register Livewire-related providers if Livewire is enabled
+        if (config('workos-teams.features.livewire', false)) {
+            $this->app->register(LivewireServiceProvider::class);
+        }
+        
         $this->app->register(ViewServiceProvider::class);
     }
 
@@ -37,6 +42,10 @@ class WorkOSTeamsServiceProvider extends ServiceProvider
     {
         // Register all service providers that need boot functionality
         $this->app->register(ConsoleServiceProvider::class);
-        $this->app->register(VoltServiceProvider::class);
+        
+        // Only register Volt if Livewire is enabled
+        if (config('workos-teams.features.livewire', false)) {
+            $this->app->register(VoltServiceProvider::class);
+        }
     }
 }

@@ -50,30 +50,33 @@ class RouteRegistrar
 
     protected function registerWebRoutes(): void
     {
-        $this->addRoute(
-            method: 'get',
-            name: 'teams.index',
-            uri: '/teams',
-            componentOrController: TeamsIndex::class
-        );
-        $this->addRoute(
-            method: 'get',
-            name: 'teams.create',
-            uri: '/teams/create',
-            componentOrController: TeamCreate::class
-        );
-        $this->addRoute(
-            method: 'get',
-            name: 'teams.show',
-            uri: '/teams/{team}',
-            componentOrController: TeamShow::class
-        );
-        $this->addRoute(
-            method: 'get',
-            name: 'teams.edit',
-            uri: '/teams/{team}/edit',
-            componentOrController: TeamEdit::class
-        );
+        // Only register Livewire routes if Livewire is enabled
+        if (config('workos-teams.features.livewire', false)) {
+            $this->addRoute(
+                method: 'get',
+                name: 'teams.index',
+                uri: '/teams',
+                componentOrController: TeamsIndex::class
+            );
+            $this->addRoute(
+                method: 'get',
+                name: 'teams.create',
+                uri: '/teams/create',
+                componentOrController: TeamCreate::class
+            );
+            $this->addRoute(
+                method: 'get',
+                name: 'teams.show',
+                uri: '/teams/{team}',
+                componentOrController: TeamShow::class
+            );
+            $this->addRoute(
+                method: 'get',
+                name: 'teams.edit',
+                uri: '/teams/{team}/edit',
+                componentOrController: TeamEdit::class
+            );
+        }
     }
 
     protected function registerWebhookRoutes(): void

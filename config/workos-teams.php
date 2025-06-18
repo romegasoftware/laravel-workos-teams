@@ -45,5 +45,6 @@ return [
     'features' => [
         'team_switching' => env('WORKOS_TEAMS_TEAM_SWITCHING_ENABLED', true),
         'automatic_organization_sync' => env('WORKOS_TEAMS_AUTOMATIC_ORGANIZATION_SYNC_ENABLED', true),
+        'livewire' => env('WORKOS_TEAMS_LIVEWIRE_ENABLED', false),
     ],
 ];
